@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
+import { getSupabase } from "@/lib/supabase"
 
 export default function VisitCounter() {
   const [count, setCount] = useState<number>(0)
@@ -10,84 +10,66 @@ export default function VisitCounter() {
   useEffect(() => {
     const fetchAndUpdateCounter = async () => {
       try {
-        // ローカルストレージから前回の訪問日と訪問カウントを取得
+        // ローカルストレージから前回の訪問日を取得
         const lastVisit = localStorage.getItem("lastVisit")
         const today = new Date().toDateString()
-        const localCount = Number.parseInt(localStorage.getItem("visitCount") || "0", 10)
 
-        // Supabaseが利用可能かチェック
-        if (supabase) {
-          // Supabaseを使用したカウンター処理
-          // 今日初めての訪問の場合のみカウントを増やす
-          if (lastVisit !== today) {
-            // カウンターを取得
-            const { data: counters, error: fetchError } = await supabase
-              .from("visit_counter")
-              .select("*")
-              .eq("id", 1)
-              .single()
+        // Supabaseクライアントを取得
+        const supabase = getSupabase()
 
-            if (fetchError && fetchError.code !== "PGRST116") {
-              console.error("Error fetching counter:", fetchError)
-              // エラーが発生した場合はローカルカウンターにフォールバック
-              handleLocalCounter(lastVisit, today, localCount)
-              return
-            }
+        if (!supabase) {
+          console.error("Supabaseクライアントが初期化できませんでした")
+          setIsLoading(false)
+          return
+        }
 
-            const currentCount = counters?.count || 0
+        // 今日初めての訪問の場合のみカウントを増やす
+        if (lastVisit !== today) {
+          // トランザクション的な処理（Supabaseではトランザクションが直接サポートされていないため）
+          const { data: currentData, error: fetchError } = await supabase
+            .from("visit_counter")
+            .select("count")
+            .eq("id", 1)
+            .single()
 
-            // カウンターを更新
-            const { data: updatedCounter, error: updateError } = await supabase
-              .from("visit_counter")
-              .upsert({ id: 1, count: currentCount + 1 })
-              .select()
-              .single()
+          if (fetchError) {
+            console.error("カウンター取得エラー:", fetchError)
+            setIsLoading(false)
+            return
+          }
 
-            if (updateError) {
-              console.error("Error updating counter:", updateError)
-              // エラーが発生した場合はローカルカウンターにフォールバック
-              handleLocalCounter(lastVisit, today, localCount)
-            } else {
-              setCount(updatedCounter.count)
-              // ローカルストレージに訪問日を保存
-              localStorage.setItem("lastVisit", today)
-            }
+          const currentCount = currentData?.count || 0
+
+          // カウンターを更新
+          const { data: updatedData, error: updateError } = await supabase
+            .from("visit_counter")
+            .update({ count: currentCount + 1 })
+            .eq("id", 1)
+            .select()
+            .single()
+
+          if (updateError) {
+            console.error("カウンター更新エラー:", updateError)
           } else {
-            // 今日すでに訪問済みの場合は、現在のカウントを取得するだけ
-            const { data: counters, error } = await supabase.from("visit_counter").select("*").eq("id", 1).single()
-
-            if (error) {
-              console.error("Error fetching counter:", error)
-              // エラーが発生した場合はローカルカウンターを表示
-              setCount(10000 + localCount)
-            } else {
-              setCount(counters?.count || 0)
-            }
+            setCount(updatedData.count)
+            // ローカルストレージに訪問日を保存
+            localStorage.setItem("lastVisit", today)
           }
         } else {
-          // Supabaseが利用できない場合はローカルカウンターを使用
-          handleLocalCounter(lastVisit, today, localCount)
+          // 今日すでに訪問済みの場合は、現在のカウントを取得するだけ
+          const { data, error } = await supabase.from("visit_counter").select("count").eq("id", 1).single()
+
+          if (error) {
+            console.error("カウンター取得エラー:", error)
+          } else {
+            setCount(data?.count || 0)
+          }
         }
       } catch (error) {
-        console.error("Unexpected error:", error)
-        // エラーが発生した場合はローカルカウンターを表示
-        const localCount = Number.parseInt(localStorage.getItem("visitCount") || "0", 10)
-        setCount(10000 + localCount)
+        console.error("予期せぬエラー:", error)
       } finally {
         setIsLoading(false)
       }
-    }
-
-    // ローカルカウンターを処理する関数
-    const handleLocalCounter = (lastVisit: string | null, today: string, localCount: number) => {
-      if (lastVisit !== today) {
-        // 今日初めての訪問の場合はカウントを増やす
-        localCount += 1
-        localStorage.setItem("visitCount", localCount.toString())
-        localStorage.setItem("lastVisit", today)
-      }
-      // 表示用のカウントを設定（デモ用に基準値を追加）
-      setCount(10000 + localCount)
     }
 
     fetchAndUpdateCounter()

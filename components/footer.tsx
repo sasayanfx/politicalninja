@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Twitter, Instagram } from "lucide-react"
 import { LineIcon } from "@/components/icons/line-icon"
+// VisitCounterのインポートが正しいことを確認
 import VisitCounter from "./visit-counter"
 
 export default function Footer() {

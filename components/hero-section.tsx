@@ -231,6 +231,7 @@ export default function HeroSection() {
               size="lg"
               variant="outline"
               className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white relative overflow-hidden group"
+              onClick={() => window.open("https://line.me/R/ti/p/@470opewc", "_blank")}
             >
               <span className="relative z-10">活動に参加する</span>
               <span className="absolute inset-0 bg-ninja-green opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>

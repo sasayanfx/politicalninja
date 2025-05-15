@@ -22,9 +22,14 @@ export default function ProfileSection() {
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-ninja-red opacity-10 rounded-full"></div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-ninja-green opacity-10 rounded-full"></div>
             <div className="relative z-10 rounded-lg overflow-hidden border-4 border-ninja-blue shadow-xl">
-              <Image src="/ninja-profile.png" alt="政治忍者" width={500} height={500} className="w-full object-cover" />
+              <Image
+                src="/images/seiji-ninja-card.png"
+                alt="政治忍者キャラクター"
+                width={500}
+                height={500}
+                className="w-full object-cover"
+              />
             </div>
-            <p className="text-center text-gray-400 text-xs mt-2">※画像はイメージです</p>
           </div>
 
           <div>

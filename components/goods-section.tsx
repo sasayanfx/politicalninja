@@ -1,13 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ShoppingBag, Star } from "lucide-react"
+import { ShoppingBag, Star, Construction } from "lucide-react"
 
 const products = [
   {
     id: 1,
     name: "政治忍者Tシャツ",
     price: 3500,
-    image: "/placeholder.svg?height=300&width=300&query=ninja t-shirt merchandise",
     badge: "人気",
     badgeColor: "bg-ninja-red",
   },
@@ -15,7 +14,6 @@ const products = [
     id: 2,
     name: "手裏剣ステッカーセット",
     price: 800,
-    image: "/placeholder.svg?height=300&width=300&query=shuriken stickers set",
     badge: "新作",
     badgeColor: "bg-ninja-green",
   },
@@ -23,7 +21,6 @@ const products = [
     id: 3,
     name: "政治替え歌CD",
     price: 2000,
-    image: "/placeholder.svg?height=300&width=300&query=music CD with ninja design",
     badge: "限定",
     badgeColor: "bg-purple-500",
   },
@@ -31,7 +28,6 @@ const products = [
     id: 4,
     name: "忍者マスク",
     price: 1500,
-    image: "/placeholder.svg?height=300&width=300&query=ninja face mask black",
     badge: "",
     badgeColor: "",
   },
@@ -65,11 +61,13 @@ export default function GoodsSection() {
                       {product.badge}
                     </div>
                   )}
-                  <img
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="w-full aspect-square object-cover"
-                  />
+                  <div className="w-full aspect-square bg-gray-800 flex flex-col items-center justify-center p-4">
+                    <Construction className="w-16 h-16 text-gray-600 mb-4" />
+                    <div className="text-center">
+                      <p className="text-ninja-green font-bold text-lg">開発中</p>
+                      <p className="text-gray-500 text-sm">Coming Soon</p>
+                    </div>
+                  </div>
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-bold text-lg mb-1">{product.name}</h3>

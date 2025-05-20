@@ -15,7 +15,7 @@ export const getSupabase = () => {
 
   // 環境変数が設定されていない場合はnullを返す
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.error("Supabase環境変数が設定されていません")
+    // エラーメッセージを削除し、静かにnullを返す
     return null
   }
 

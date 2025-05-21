@@ -1,103 +1,96 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { getSupabase } from "@/lib/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 export default function VisitCounter() {
-  const [count, setCount] = useState<number>(0)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<boolean>(false)
+  const [count, setCount] = useState<number | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
     const fetchAndUpdateCounter = async () => {
       try {
-        // Supabaseクライアントを取得
-        const supabase = getSupabase()
+        // 現在の日付を取得
+        const today = new Date().toISOString().split("T")[0]
 
-        // Supabaseクライアントが利用できない場合は静的な表示に切り替え
-        if (!supabase) {
-          // コンソールログを削除し、静かに静的カウンターを表示
-          setCount(1234) // 静的なカウント値
-          setError(true)
-          setIsLoading(false)
+        // ローカルストレージから最後の訪問日を取得
+        const lastVisit = localStorage.getItem("lastVisit")
+
+        // カウンターの現在値を取得
+        const { data, error: fetchError } = await supabase.from("visit_counter").select("*").eq("id", 1).single()
+
+        if (fetchError) {
+          throw new Error(`Error fetching counter: ${fetchError.message}`)
+        }
+
+        // データが存在しない場合は初期値を設定
+        if (!data) {
+          const { error: insertError } = await supabase
+            .from("visit_counter")
+            .insert([{ id: 1, count: 1, last_updated: new Date().toISOString() }])
+
+          if (insertError) {
+            throw new Error(`Error initializing counter: ${insertError.message}`)
+          }
+
+          setCount(1)
+          localStorage.setItem("lastVisit", today)
           return
         }
 
-        // ローカルストレージから前回の訪問日を取得
-        const lastVisit = localStorage.getItem("lastVisit")
-        const today = new Date().toDateString()
-
-        // 今日初めての訪問の場合のみカウントを増やす
+        // 今日初めての訪問の場合はカウンターを増加
         if (lastVisit !== today) {
-          // トランザクション的な処理（Supabaseではトランザクションが直接サポートされていないため）
-          const { data: currentData, error: fetchError } = await supabase
+          console.log("First visit today, incrementing counter")
+
+          // RPCの代わりに直接UPDATEクエリを実行
+          const { error: updateError } = await supabase
             .from("visit_counter")
-            .select("count")
+            .update({ count: data.count + 1, last_updated: new Date().toISOString() })
             .eq("id", 1)
-            .single()
-
-          if (fetchError) {
-            // エラーログを削除
-            setCount(1234) // エラー時は静的な値を表示
-            setError(true)
-            setIsLoading(false)
-            return
-          }
-
-          const currentCount = currentData?.count || 0
-
-          // カウンターを更新
-          const { data: updatedData, error: updateError } = await supabase
-            .from("visit_counter")
-            .update({ count: currentCount + 1 })
-            .eq("id", 1)
-            .select()
-            .single()
 
           if (updateError) {
-            // エラーログを削除
-            setCount(currentCount) // 更新エラー時は現在の値を表示
-          } else {
-            setCount(updatedData.count)
-            // ローカルストレージに訪問日を保存
-            localStorage.setItem("lastVisit", today)
+            throw new Error(`Error updating counter: ${updateError.message}`)
           }
-        } else {
-          // 今日すでに訪問済みの場合は、現在のカウントを取得するだけ
-          const { data, error } = await supabase.from("visit_counter").select("count").eq("id", 1).single()
 
-          if (error) {
-            // エラーログを削除
-            setCount(1234) // エラー時は静的な値を表示
-            setError(true)
-          } else {
-            setCount(data?.count || 0)
+          // 更新後の値を再取得
+          const { data: updatedData, error: refetchError } = await supabase
+            .from("visit_counter")
+            .select("*")
+            .eq("id", 1)
+            .single()
+
+          if (refetchError) {
+            throw new Error(`Error refetching counter: ${refetchError.message}`)
           }
+
+          setCount(updatedData?.count || data.count + 1)
+          localStorage.setItem("lastVisit", today)
+        } else {
+          console.log("Already visited today")
+          setCount(data.count)
         }
-      } catch (error) {
-        // エラーログを削除
-        setCount(1234) // エラー時は静的な値を表示
-        setError(true)
+      } catch (err) {
+        console.error(err)
+        setError(err instanceof Error ? err.message : "Unknown error")
       } finally {
-        setIsLoading(false)
+        setLoading(false)
       }
     }
 
     fetchAndUpdateCounter()
-  }, [])
+  }, [supabase])
+
+  if (loading) return <div className="text-center">Loading visitor count...</div>
+  if (error) return <div className="text-center text-red-500">Error: {error}</div>
 
   return (
-    <div className="flex items-center space-x-2">
-      <div className="text-xs text-gray-400">訪問者数:</div>
-      <div className="bg-ninja-blue-dark border border-ninja-green px-2 py-1 rounded-md">
-        {isLoading ? (
-          <div className="animate-pulse w-16 h-5 bg-gray-700 rounded"></div>
-        ) : (
-          <div className="font-mono text-ninja-red font-bold tracking-wider">
-            {error ? "1,234+" : count.toLocaleString()}
-          </div>
-        )}
-      </div>
+    <div className="text-center">
+      <p className="text-lg">
+        Total Visitors: <span className="font-bold">{count}</span>
+      </p>
     </div>
   )
 }

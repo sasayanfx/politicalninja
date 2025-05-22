@@ -14,7 +14,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">政治忍者</h3>
             <p className="text-gray-300 mb-4">日本を救え！日本を守れ！政治にエンタメを！</p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 mb-4">
               <Link
                 href="https://x.com/seijixninja"
                 target="_blank"
@@ -43,9 +43,7 @@ export default function Footer() {
                 <LineIcon className="h-6 w-6" />
               </Link>
             </div>
-            <div className="mt-4">
-              <VisitCounter />
-            </div>
+            <VisitCounter />
           </div>
 
           <div>

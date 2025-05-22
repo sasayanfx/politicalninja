@@ -95,15 +95,15 @@ export default function VisitCounter() {
   const countString = formatCount()
 
   return (
-    <div className="text-center">
+    <div className="text-left">
       <p className="text-sm mb-2">Total Visitors</p>
-      <div className="flex justify-center">
+      <div className="flex">
         {countString.split("").map((digit, index) => (
           <div
             key={index}
-            className="w-8 h-10 bg-gray-800 border border-gray-700 rounded mx-0.5 flex items-center justify-center"
+            className="w-7 h-9 bg-gray-800 border border-gray-700 rounded mx-0.5 flex items-center justify-center"
           >
-            <span className="text-xl font-mono font-bold text-ninja-red">{digit}</span>
+            <span className="text-lg font-mono font-bold text-ninja-red">{digit}</span>
           </div>
         ))}
       </div>

@@ -86,11 +86,27 @@ export default function VisitCounter() {
   if (loading) return <div className="text-center">Loading visitor count...</div>
   if (error) return <div className="text-center text-red-500">Error: {error}</div>
 
+  // カウントを文字列に変換し、必要に応じて0埋め
+  const formatCount = () => {
+    if (count === null) return "00000"
+    return count.toString().padStart(5, "0")
+  }
+
+  const countString = formatCount()
+
   return (
     <div className="text-center">
-      <p className="text-lg">
-        Total Visitors: <span className="font-bold">{count}</span>
-      </p>
+      <p className="text-sm mb-2">Total Visitors</p>
+      <div className="flex justify-center">
+        {countString.split("").map((digit, index) => (
+          <div
+            key={index}
+            className="w-8 h-10 bg-gray-800 border border-gray-700 rounded mx-0.5 flex items-center justify-center"
+          >
+            <span className="text-xl font-mono font-bold text-ninja-red">{digit}</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

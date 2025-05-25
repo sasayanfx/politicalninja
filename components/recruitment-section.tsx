@@ -93,6 +93,24 @@ export default function RecruitmentSection() {
           <ul className="space-y-2">
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
+              <span>活動資金の寄付</span>
+            </li>
+            <li className="flex items-start">
+              <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
+              <span>無償・格安での技術提供</span>
+            </li>
+            <li className="flex items-start">
+              <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
+              <span>SNSでの拡散・シェアによる応援</span>
+            </li>
+            <li className="flex items-start">
+              <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
+              <span>イベント参加や口コミによる応援</span>
+            </li>
+          </ul>
+          {/* <ul className="space-y-2">
+            <li className="flex items-start">
+              <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
               <span>活動資金のクラウドファンディング参加</span>
             </li>
             <li className="flex items-start">
@@ -107,7 +125,7 @@ export default function RecruitmentSection() {
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
               <span>イベント参加や口コミによる応援</span>
             </li>
-          </ul>
+          </ul> */}
           <p className="mt-3 text-sm">※あなたのできる形での応援をお待ちしています</p>
         </div>
       ),

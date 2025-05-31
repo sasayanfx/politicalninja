@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Play, Share2, Download, Flame } from "lucide-react"
@@ -105,35 +107,46 @@ export default function ParodySongsSection() {
             <Card className="bg-black border-ninja-red mb-6">
               <CardContent className="p-0">
                 <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <a
+                    href="https://youtu.be/Fv9G-kPJ0eE"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute inset-0 flex items-center justify-center z-10"
+                  >
                     <Button size="icon" className="w-16 h-16 rounded-full bg-ninja-red hover:bg-ninja-red-light">
                       <Play className="h-8 w-8" />
                     </Button>
-                  </div>
+                  </a>
                   <img
                     src="/ninja-music-thumbnail.png"
-                    alt="最新の政治忍者楽曲"
+                    alt="増税信者 - 政治忍者"
                     className="w-full h-full object-cover opacity-70"
                   />
                 </div>
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-2">
-                    <h4 className="text-xl font-bold">「おら国会さ行くだ」</h4>
+                    <h4 className="text-xl font-bold">「増税信者」</h4>
                     <SatireLevel level={5} />
                   </div>
-                  <p className="text-gray-300 mb-4">若者の政治参加を促す政治忍者の人気楽曲</p>
+                  <p className="text-gray-300 mb-4">お祭り忍者の替え歌 - 政治忍者ファーストリリース曲</p>
                   <div className="flex space-x-3">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
-                    >
-                      <Download className="mr-2 h-4 w-4" /> ダウンロード
-                    </Button>
+                    <a href="https://youtu.be/Fv9G-kPJ0eE" target="_blank" rel="noopener noreferrer">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
+                      >
+                        <Download className="mr-2 h-4 w-4" /> YouTube
+                      </Button>
+                    </a>
                     <Button
                       size="sm"
                       variant="outline"
                       className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
+                      onClick={() => {
+                        navigator.clipboard.writeText("https://youtu.be/Fv9G-kPJ0eE")
+                        // You could add a toast notification here
+                      }}
                     >
                       <Share2 className="mr-2 h-4 w-4" /> シェア
                     </Button>

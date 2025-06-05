@@ -36,7 +36,7 @@ export default function ParodySongsSection() {
     { title: "税のブルース", type: "政治忍者替え歌", satireLevel: 2 }, // 中辛(3)から辛め(2)に変更
     { title: "増税ループ", type: "政治忍者替え歌", satireLevel: 4 },
     { title: "政治改革ジャパン", type: "政治忍者替え歌", satireLevel: 1 }, // 辛め(2)からピリ辛(1)に変更
-    { title: "増税信者", type: "政治忍者替え歌", satireLevel: 5 },
+    { title: "おら国会さ行くだ", type: "政治忍者替え歌", satireLevel: 3 },
   ]
 
   return (
@@ -118,9 +118,9 @@ export default function ParodySongsSection() {
                     </Button>
                   </a>
                   <img
-                    src="/ninja-music-thumbnail.png"
+                    src="/images/zouzei-shinja-thumbnail.jpg"
                     alt="増税信者 - 政治忍者"
-                    className="w-full h-full object-cover opacity-70"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-6">

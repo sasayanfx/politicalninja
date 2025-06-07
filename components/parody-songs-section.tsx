@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Play, Share2, Download, Flame } from "lucide-react"
+import { Play, Share2, Download, Flame, History } from "lucide-react"
 import { ShurikenIcon } from "@/components/icons/shuriken-icon"
+import { useState } from "react"
 
 // 風刺度合いを表示するコンポーネント
 const SatireLevel = ({ level }: { level: 1 | 2 | 3 | 4 | 5 }) => {
@@ -31,12 +32,26 @@ const SatireLevel = ({ level }: { level: 1 | 2 | 3 | 4 | 5 }) => {
 }
 
 export default function ParodySongsSection() {
+  // タブの状態管理
+  const [activeTab, setActiveTab] = useState<"latest" | "previous">("latest")
+
   // リリース予定曲のデータ
   const upcomingSongs = [
-    { title: "税のブルース", type: "政治忍者替え歌", satireLevel: 2 }, // 中辛(3)から辛め(2)に変更
     { title: "増税ループ", type: "政治忍者替え歌", satireLevel: 4 },
-    { title: "政治改革ジャパン", type: "政治忍者替え歌", satireLevel: 1 }, // 辛め(2)からピリ辛(1)に変更
+    { title: "政治改革ジャパン", type: "政治忍者替え歌", satireLevel: 1 },
     { title: "おら国会さ行くだ", type: "政治忍者替え歌", satireLevel: 3 },
+  ]
+
+  // 過去の楽曲データ
+  const previousSongs = [
+    {
+      title: "増税信者",
+      type: "お祭り忍者の替え歌",
+      satireLevel: 5,
+      thumbnail: "/images/zouzei-shinja-thumbnail.jpg",
+      youtubeUrl: "https://youtu.be/Fv9G-kPJ0eE",
+      description: "政治忍者ファーストリリース曲",
+    },
   ]
 
   return (
@@ -102,58 +117,131 @@ export default function ParodySongsSection() {
           </div>
 
           <div>
-            <h3 className="text-2xl font-bold mb-6 text-ninja-green">最新の楽曲</h3>
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-ninja-green">最新の楽曲</h3>
+              <div className="flex gap-2">
+                <Button
+                  variant={activeTab === "latest" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setActiveTab("latest")}
+                  className={activeTab === "latest" ? "bg-ninja-red hover:bg-ninja-red-dark" : ""}
+                >
+                  最新曲
+                </Button>
+                <Button
+                  variant={activeTab === "previous" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setActiveTab("previous")}
+                  className={activeTab === "previous" ? "bg-ninja-green hover:bg-ninja-green-dark" : ""}
+                >
+                  <History className="mr-1 h-4 w-4" /> 過去の曲
+                </Button>
+              </div>
+            </div>
 
-            <Card className="bg-black border-ninja-red mb-6">
-              <CardContent className="p-0">
-                <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
-                  <a
-                    href="https://youtu.be/Fv9G-kPJ0eE"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute inset-0 flex items-center justify-center z-10"
-                  >
-                    <Button size="icon" className="w-16 h-16 rounded-full bg-ninja-red hover:bg-ninja-red-light">
-                      <Play className="h-8 w-8" />
-                    </Button>
-                  </a>
-                  <img
-                    src="/images/zouzei-shinja-thumbnail.jpg"
-                    alt="増税信者 - 政治忍者"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="text-xl font-bold">「増税信者」</h4>
-                    <SatireLevel level={5} />
+            {activeTab === "latest" ? (
+              <Card className="bg-black border-ninja-red mb-6">
+                <CardContent className="p-0">
+                  <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
+                    <a
+                      href="https://youtu.be/QwRxGfhfkkQ"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute inset-0 flex items-center justify-center z-10"
+                    >
+                      <Button size="icon" className="w-16 h-16 rounded-full bg-ninja-red hover:bg-ninja-red-light">
+                        <Play className="h-8 w-8" />
+                      </Button>
+                    </a>
+                    <img
+                      src="/images/zei-no-blues-thumbnail.jpg"
+                      alt="税のブルース - 政治忍者"
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
                   </div>
-                  <p className="text-gray-300 mb-4">お祭り忍者の替え歌 - 政治忍者ファーストリリース曲</p>
-                  <div className="flex space-x-3">
-                    <a href="https://youtu.be/Fv9G-kPJ0eE" target="_blank" rel="noopener noreferrer">
+                  <div className="p-6">
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="text-xl font-bold">「税のブルース」</h4>
+                      <SatireLevel level={4} />
+                    </div>
+                    <p className="text-gray-300 mb-4">政治忍者セカンドリリース曲</p>
+                    <div className="flex space-x-3">
+                      <a href="https://youtu.be/QwRxGfhfkkQ" target="_blank" rel="noopener noreferrer">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
+                        >
+                          <Download className="mr-2 h-4 w-4" /> YouTube
+                        </Button>
+                      </a>
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
+                        className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
+                        onClick={() => {
+                          navigator.clipboard.writeText("https://youtu.be/QwRxGfhfkkQ")
+                          // You could add a toast notification here
+                        }}
                       >
-                        <Download className="mr-2 h-4 w-4" /> YouTube
+                        <Share2 className="mr-2 h-4 w-4" /> シェア
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="bg-black border-ninja-red mb-6">
+                <CardContent className="p-0">
+                  <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
+                    <a
+                      href="https://youtu.be/Fv9G-kPJ0eE"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute inset-0 flex items-center justify-center z-10"
+                    >
+                      <Button size="icon" className="w-16 h-16 rounded-full bg-ninja-red hover:bg-ninja-red-light">
+                        <Play className="h-8 w-8" />
                       </Button>
                     </a>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
-                      onClick={() => {
-                        navigator.clipboard.writeText("https://youtu.be/Fv9G-kPJ0eE")
-                        // You could add a toast notification here
-                      }}
-                    >
-                      <Share2 className="mr-2 h-4 w-4" /> シェア
-                    </Button>
+                    <img
+                      src="/images/zouzei-shinja-thumbnail.jpg"
+                      alt="増税信者 - 政治忍者"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="p-6">
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="text-xl font-bold">「増税信者」</h4>
+                      <SatireLevel level={5} />
+                    </div>
+                    <p className="text-gray-300 mb-4">お祭り忍者の替え歌 - 政治忍者ファーストリリース曲</p>
+                    <div className="flex space-x-3">
+                      <a href="https://youtu.be/Fv9G-kPJ0eE" target="_blank" rel="noopener noreferrer">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
+                        >
+                          <Download className="mr-2 h-4 w-4" /> YouTube
+                        </Button>
+                      </a>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
+                        onClick={() => {
+                          navigator.clipboard.writeText("https://youtu.be/Fv9G-kPJ0eE")
+                        }}
+                      >
+                        <Share2 className="mr-2 h-4 w-4" /> シェア
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-2xl font-bold text-ninja-green">リリース予定曲</h3>
@@ -163,22 +251,8 @@ export default function ParodySongsSection() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              {upcomingSongs.slice(0, 2).map((song, index) => (
-                <Card key={index} className="bg-black border-ninja-green">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center mb-1">
-                      <h5 className="font-bold">{song.title}</h5>
-                      <SatireLevel level={song.satireLevel as 1 | 2 | 3 | 4 | 5} />
-                    </div>
-                    <p className="text-xs text-gray-400">{song.type}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              {upcomingSongs.slice(2, 4).map((song, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {upcomingSongs.map((song, index) => (
                 <Card key={index} className="bg-black border-ninja-green">
                   <CardContent className="p-4">
                     <div className="flex justify-between items-center mb-1">

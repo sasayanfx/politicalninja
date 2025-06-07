@@ -4,6 +4,7 @@ import PhilosophySection from "@/components/philosophy-section"
 import CurrentStateSection from "@/components/current-state-section"
 import PoliticalIssuesSection from "@/components/political-issues-section"
 import ParodySongsSection from "@/components/parody-songs-section"
+import SongArchiveSection from "@/components/song-archive-section"
 import GoalsSection from "@/components/goals-section"
 import CalendarSection from "@/components/calendar-section"
 import FansSection from "@/components/fans-section"
@@ -20,6 +21,7 @@ export default function Home() {
       <CurrentStateSection />
       <PoliticalIssuesSection />
       <ParodySongsSection />
+      <SongArchiveSection />
       <GoalsSection />
       <CalendarSection />
       <FansSection />

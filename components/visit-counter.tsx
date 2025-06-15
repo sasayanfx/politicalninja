@@ -1,18 +1,24 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { getSupabase } from "@/lib/supabase"
 
 export default function VisitCounter() {
   const [count, setCount] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const supabase = createClientComponentClient()
-
   useEffect(() => {
     const fetchAndUpdateCounter = async () => {
       try {
+        const supabase = getSupabase()
+
+        // Supabaseが利用できない場合は静かに終了
+        if (!supabase) {
+          setLoading(false)
+          return
+        }
+
         // 現在の日付を取得
         const today = new Date().toISOString().split("T")[0]
 
@@ -81,7 +87,13 @@ export default function VisitCounter() {
     }
 
     fetchAndUpdateCounter()
-  }, [supabase])
+  }, [])
+
+  // Supabaseが利用できない場合は何も表示しない
+  const supabase = getSupabase()
+  if (!supabase) {
+    return null
+  }
 
   if (loading) return <div className="text-center">Loading visitor count...</div>
   if (error) return <div className="text-center text-red-500">Error: {error}</div>

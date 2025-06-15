@@ -35,6 +35,15 @@ export default function SongArchiveSection() {
   // 過去の楽曲データ
   const releasedSongs = [
     {
+      title: "俺ら国会さ行くだ",
+      type: "政治忍者オリジナル",
+      satireLevel: 5,
+      thumbnail: "/images/orera-kokkai-sa-ikuda-thumbnail.jpg",
+      youtubeUrl: "https://youtu.be/SzAGUQPuMvE",
+      description: "政治忍者サードリリース曲",
+      releaseDate: "2023年7月",
+    },
+    {
       title: "税のブルース",
       type: "政治忍者オリジナル",
       satireLevel: 4,
@@ -65,7 +74,7 @@ export default function SongArchiveSection() {
           <p className="mt-4 text-lg">政治忍者がこれまでにリリースした楽曲の一覧です</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {releasedSongs.map((song, index) => (
             <Card key={index} className="bg-black border-ninja-green overflow-hidden">
               <CardContent className="p-0">
@@ -129,9 +138,11 @@ export default function SongArchiveSection() {
             政治忍者の楽曲は随時追加されます。お楽しみに！
             <ShurikenIcon className="inline-block text-ninja-red ml-2" size={20} />
           </p>
-          <Button className="bg-ninja-red hover:bg-ninja-red-dark">
-            <Play className="mr-2 h-4 w-4" /> YouTubeチャンネルを見る
-          </Button>
+          <a href="https://www.youtube.com/channel/UC1Ef1iC6VeZiknEAOl0eI9g" target="_blank" rel="noopener noreferrer">
+            <Button className="bg-ninja-red hover:bg-ninja-red-dark">
+              <Play className="mr-2 h-4 w-4" /> YouTubeチャンネルを見る
+            </Button>
+          </a>
         </div>
       </div>
     </section>

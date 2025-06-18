@@ -41,7 +41,7 @@ export default function SongArchiveSection() {
       thumbnail: "/images/orera-kokkai-sa-ikuda-thumbnail.jpg",
       youtubeUrl: "https://youtu.be/SzAGUQPuMvE",
       description: "政治忍者サードリリース曲",
-      releaseDate: "2023年7月",
+      releaseDate: "2025年6月",
     },
     {
       title: "税のブルース",
@@ -50,7 +50,7 @@ export default function SongArchiveSection() {
       thumbnail: "/images/zei-no-blues-thumbnail.jpg",
       youtubeUrl: "https://youtu.be/QwRxGfhfkkQ",
       description: "政治忍者セカンドリリース曲",
-      releaseDate: "2023年6月",
+      releaseDate: "2025年6月",
     },
     {
       title: "増税信者",
@@ -59,7 +59,7 @@ export default function SongArchiveSection() {
       thumbnail: "/images/zouzei-shinja-thumbnail.jpg",
       youtubeUrl: "https://youtu.be/Fv9G-kPJ0eE",
       description: "政治忍者ファーストリリース曲",
-      releaseDate: "2023年5月",
+      releaseDate: "2025年6月",
     },
   ]
 

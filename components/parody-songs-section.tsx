@@ -45,6 +45,14 @@ export default function ParodySongsSection() {
   // 過去の楽曲データ
   const previousSongs = [
     {
+      title: "俺ら国会さ行くだ",
+      type: "政治忍者オリジナル",
+      satireLevel: 5,
+      thumbnail: "/images/orera-kokkai-sa-ikuda-thumbnail.jpg",
+      youtubeUrl: "https://youtu.be/SzAGUQPuMvE",
+      description: "政治忍者サードリリース曲",
+    },
+    {
       title: "税のブルース",
       type: "政治忍者オリジナル",
       satireLevel: 4,
@@ -152,7 +160,7 @@ export default function ParodySongsSection() {
                 <CardContent className="p-0">
                   <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
                     <a
-                      href="https://youtu.be/SzAGUQPuMvE"
+                      href="https://youtu.be/eorqiDHnUtQ"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="absolute inset-0 flex items-center justify-center z-10"
@@ -162,20 +170,20 @@ export default function ParodySongsSection() {
                       </Button>
                     </a>
                     <img
-                      src="/images/orera-kokkai-sa-ikuda-thumbnail.jpg"
-                      alt="俺ら国会さ行くだ - 政治忍者"
+                      src="/images/kome-kuu-hi-made-thumbnail.jpg"
+                      alt="米食う日まで - 政治忍者"
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   </div>
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-2">
-                      <h4 className="text-xl font-bold">「俺ら国会さ行くだ」</h4>
-                      <SatireLevel level={5} />
+                      <h4 className="text-xl font-bold">「米食う日まで」</h4>
+                      <SatireLevel level={4} />
                     </div>
-                    <p className="text-gray-300 mb-4">政治忍者サードリリース曲</p>
+                    <p className="text-gray-300 mb-4">政治忍者最新リリース曲</p>
                     <div className="flex space-x-3">
-                      <a href="https://youtu.be/SzAGUQPuMvE" target="_blank" rel="noopener noreferrer">
+                      <a href="https://youtu.be/eorqiDHnUtQ" target="_blank" rel="noopener noreferrer">
                         <Button
                           size="sm"
                           variant="outline"
@@ -189,7 +197,7 @@ export default function ParodySongsSection() {
                         variant="outline"
                         className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
                         onClick={() => {
-                          navigator.clipboard.writeText("https://youtu.be/SzAGUQPuMvE")
+                          navigator.clipboard.writeText("https://youtu.be/eorqiDHnUtQ")
                           // You could add a toast notification here
                         }}
                       >
@@ -200,53 +208,55 @@ export default function ParodySongsSection() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-4 max-h-96 overflow-y-auto">
                 {previousSongs.map((song, index) => (
                   <Card key={index} className="bg-black border-ninja-red">
-                    <CardContent className="p-0">
-                      <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
-                        <a
-                          href={song.youtubeUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="absolute inset-0 flex items-center justify-center z-10"
-                        >
-                          <Button size="icon" className="w-16 h-16 rounded-full bg-ninja-red hover:bg-ninja-red-light">
-                            <Play className="h-8 w-8" />
-                          </Button>
-                        </a>
-                        <img
-                          src={song.thumbnail || "/placeholder.svg"}
-                          alt={`${song.title} - 政治忍者`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="p-6">
-                        <div className="flex justify-between items-center mb-2">
-                          <h4 className="text-xl font-bold">「{song.title}」</h4>
-                          <SatireLevel level={song.satireLevel as 1 | 2 | 3 | 4 | 5} />
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-20 h-20 relative bg-gray-900 flex items-center justify-center rounded">
+                          <a
+                            href={song.youtubeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="absolute inset-0 flex items-center justify-center z-10"
+                          >
+                            <Button size="icon" className="w-8 h-8 rounded-full bg-ninja-red hover:bg-ninja-red-light">
+                              <Play className="h-4 w-4" />
+                            </Button>
+                          </a>
+                          <img
+                            src={song.thumbnail || "/placeholder.svg"}
+                            alt={`${song.title} - 政治忍者`}
+                            className="w-full h-full object-cover rounded"
+                          />
                         </div>
-                        <p className="text-gray-300 mb-4">{song.description}</p>
-                        <div className="flex space-x-3">
-                          <a href={song.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                        <div className="flex-1">
+                          <div className="flex justify-between items-center mb-1">
+                            <h5 className="font-bold">「{song.title}」</h5>
+                            <SatireLevel level={song.satireLevel as 1 | 2 | 3 | 4 | 5} />
+                          </div>
+                          <p className="text-sm text-gray-300 mb-2">{song.description}</p>
+                          <div className="flex space-x-2">
+                            <a href={song.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white text-xs"
+                              >
+                                <Download className="mr-1 h-3 w-3" /> YouTube
+                              </Button>
+                            </a>
                             <Button
                               size="sm"
                               variant="outline"
-                              className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
+                              className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white text-xs"
+                              onClick={() => {
+                                navigator.clipboard.writeText(song.youtubeUrl)
+                              }}
                             >
-                              <Download className="mr-2 h-4 w-4" /> YouTube
+                              <Share2 className="mr-1 h-3 w-3" /> シェア
                             </Button>
-                          </a>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
-                            onClick={() => {
-                              navigator.clipboard.writeText(song.youtubeUrl)
-                            }}
-                          >
-                            <Share2 className="mr-2 h-4 w-4" /> シェア
-                          </Button>
+                          </div>
                         </div>
                       </div>
                     </CardContent>

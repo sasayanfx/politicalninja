@@ -35,6 +35,15 @@ export default function SongArchiveSection() {
   // 過去の楽曲データ
   const releasedSongs = [
     {
+      title: "米食う日まで",
+      type: "政治忍者オリジナル",
+      satireLevel: 4,
+      thumbnail: "/images/kome-kuu-hi-made-thumbnail.jpg",
+      youtubeUrl: "https://youtu.be/eorqiDHnUtQ",
+      description: "政治忍者最新リリース曲",
+      releaseDate: "2025年6月",
+    },
+    {
       title: "俺ら国会さ行くだ",
       type: "政治忍者オリジナル",
       satireLevel: 5,
@@ -74,7 +83,7 @@ export default function SongArchiveSection() {
           <p className="mt-4 text-lg">政治忍者がこれまでにリリースした楽曲の一覧です</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {releasedSongs.map((song, index) => (
             <Card key={index} className="bg-black border-ninja-green overflow-hidden">
               <CardContent className="p-0">

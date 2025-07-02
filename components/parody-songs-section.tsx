@@ -45,6 +45,14 @@ export default function ParodySongsSection() {
   // 過去の楽曲データ
   const previousSongs = [
     {
+      title: "米食う日まで",
+      type: "政治忍者オリジナル",
+      satireLevel: 4,
+      thumbnail: "/images/kome-kuu-hi-made-thumbnail.jpg",
+      youtubeUrl: "https://youtu.be/eorqiDHnUtQ",
+      description: "政治忍者最新リリース曲",
+    },
+    {
       title: "俺ら国会さ行くだ",
       type: "政治忍者オリジナル",
       satireLevel: 5,
@@ -160,7 +168,7 @@ export default function ParodySongsSection() {
                 <CardContent className="p-0">
                   <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
                     <a
-                      href="https://youtu.be/eorqiDHnUtQ"
+                      href="https://youtu.be/dPy2YdzakgY"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="absolute inset-0 flex items-center justify-center z-10"
@@ -170,24 +178,24 @@ export default function ParodySongsSection() {
                       </Button>
                     </a>
                     <img
-                      src="/images/kome-kuu-hi-made-thumbnail.jpg"
-                      alt="米食う日まで - 政治忍者"
+                      src="/images/munou-souri-tanjou-thumbnail.jpg"
+                      alt="無能総理誕生！ - 政治忍者"
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   </div>
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-2">
-                      <h4 className="text-xl font-bold">「米食う日まで」</h4>
-                      <SatireLevel level={4} />
+                      <h4 className="text-xl font-bold">「無能総理誕生！」</h4>
+                      <SatireLevel level={5} />
                     </div>
-                    <p className="text-gray-300 mb-4">政治忍者最新リリース曲</p>
+                    <p className="text-gray-300 mb-4">政治忍者超激辛リリース曲</p>
                     <div className="flex space-x-3">
-                      <a href="https://youtu.be/eorqiDHnUtQ" target="_blank" rel="noopener noreferrer">
+                      <a href="https://youtu.be/dPy2YdzakgY" target="_blank" rel="noopener noreferrer">
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
+                          className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white bg-transparent"
                         >
                           <Download className="mr-2 h-4 w-4" /> YouTube
                         </Button>
@@ -195,9 +203,9 @@ export default function ParodySongsSection() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
+                        className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white bg-transparent"
                         onClick={() => {
-                          navigator.clipboard.writeText("https://youtu.be/eorqiDHnUtQ")
+                          navigator.clipboard.writeText("https://youtu.be/dPy2YdzakgY")
                           // You could add a toast notification here
                         }}
                       >
@@ -241,7 +249,7 @@ export default function ParodySongsSection() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white text-xs"
+                                className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white text-xs bg-transparent"
                               >
                                 <Download className="mr-1 h-3 w-3" /> YouTube
                               </Button>
@@ -249,7 +257,7 @@ export default function ParodySongsSection() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white text-xs"
+                              className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white text-xs bg-transparent"
                               onClick={() => {
                                 navigator.clipboard.writeText(song.youtubeUrl)
                               }}

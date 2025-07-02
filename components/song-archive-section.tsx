@@ -35,6 +35,15 @@ export default function SongArchiveSection() {
   // 過去の楽曲データ
   const releasedSongs = [
     {
+      title: "無能総理誕生！",
+      type: "政治忍者オリジナル",
+      satireLevel: 5,
+      thumbnail: "/images/munou-souri-tanjou-thumbnail.jpg",
+      youtubeUrl: "https://youtu.be/dPy2YdzakgY",
+      description: "政治忍者超激辛リリース曲",
+      releaseDate: "2025年7月",
+    },
+    {
       title: "米食う日まで",
       type: "政治忍者オリジナル",
       satireLevel: 4,
@@ -83,7 +92,7 @@ export default function SongArchiveSection() {
           <p className="mt-4 text-lg">政治忍者がこれまでにリリースした楽曲の一覧です</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {releasedSongs.map((song, index) => (
             <Card key={index} className="bg-black border-ninja-green overflow-hidden">
               <CardContent className="p-0">
@@ -118,7 +127,7 @@ export default function SongArchiveSection() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white"
+                        className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white bg-transparent"
                       >
                         <Download className="mr-2 h-4 w-4" /> YouTube
                       </Button>
@@ -126,7 +135,7 @@ export default function SongArchiveSection() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white"
+                      className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white bg-transparent"
                       onClick={() => {
                         navigator.clipboard.writeText(song.youtubeUrl)
                         // You could add a toast notification here

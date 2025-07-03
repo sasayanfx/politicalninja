@@ -35,6 +35,23 @@ export default function ParodySongsSection() {
     }
   }
 
+  const getSatireDegreeText = (degree: number) => {
+    switch (degree) {
+      case 1:
+        return "ピリ辛"
+      case 2:
+        return "辛口"
+      case 3:
+        return "中辛"
+      case 4:
+        return "大辛"
+      case 5:
+        return "激辛"
+      default:
+        return "ピリ辛"
+    }
+  }
+
   const latestSong = {
     title: "無能総理誕生！",
     originalSong: "勇者王誕生！",
@@ -120,21 +137,13 @@ export default function ParodySongsSection() {
         <div className="flex items-center mb-3">
           <span className="text-sm font-medium mr-2">風刺度:</span>
           <div className="flex space-x-1">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className={`text-lg ${i < song.satireDegree ? "text-ninja-red" : "text-gray-600"}`}>
+            {[...Array(song.satireDegree)].map((_, i) => (
+              <span key={i} className="text-lg text-ninja-red">
                 🔥
               </span>
             ))}
           </div>
-          <span className="ml-2 text-sm font-bold text-ninja-red">
-            {song.satireDegree === 5
-              ? "激辛"
-              : song.satireDegree === 4
-                ? "辛口"
-                : song.satireDegree === 3
-                  ? "中辛"
-                  : "甘口"}
-          </span>
+          <span className="ml-2 text-sm font-bold text-ninja-red">{getSatireDegreeText(song.satireDegree)}</span>
         </div>
 
         <p className="text-sm text-gray-300 mb-4">{song.description}</p>
@@ -171,7 +180,7 @@ export default function ParodySongsSection() {
   )
 
   return (
-    <section id="songs" className="py-20 bg-black">
+    <section id="parody-songs" className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">

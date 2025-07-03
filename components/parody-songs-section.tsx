@@ -1,300 +1,212 @@
 "use client"
-
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Play, Share2, Download, Flame, History } from "lucide-react"
-import { ShurikenIcon } from "@/components/icons/shuriken-icon"
-import { useState } from "react"
-
-// 風刺度合いを表示するコンポーネント
-const SatireLevel = ({ level }: { level: 1 | 2 | 3 | 4 | 5 }) => {
-  const labels = {
-    1: "ピリ辛",
-    2: "辛め",
-    3: "中辛",
-    4: "大辛",
-    5: "激辛",
-  }
-
-  return (
-    <div className="flex items-center gap-1">
-      <div className="flex">
-        {Array.from({ length: level }).map((_, i) => (
-          <Flame key={i} className="h-4 w-4 text-red-500 fill-red-500" />
-        ))}
-        {Array.from({ length: 5 - level }).map((_, i) => (
-          <Flame key={i + level} className="h-4 w-4 text-gray-400" />
-        ))}
-      </div>
-      <span className="text-xs ml-1">{labels[level]}</span>
-    </div>
-  )
-}
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Play, Share2, ExternalLink } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import Image from "next/image"
 
 export default function ParodySongsSection() {
-  // タブの状態管理
-  const [activeTab, setActiveTab] = useState<"latest" | "previous">("latest")
+  const { toast } = useToast()
 
-  // リリース予定曲のデータ
-  const upcomingSongs = [
-    { title: "増税地獄", type: "政治忍者替え歌", satireLevel: 4 },
-    { title: "増税ループ", type: "政治忍者替え歌", satireLevel: 4 },
-    { title: "政治改革ジャパン", type: "政治忍者替え歌", satireLevel: 1 },
-  ]
+  const handleShare = async (title: string, url: string) => {
+    const text = `🎵 ${title} - 政治忍者の替え歌をチェック！`
 
-  // 過去の楽曲データ
-  const previousSongs = [
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: text, url })
+      } catch (error) {
+        // ユーザーがキャンセルした場合など
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${text} ${url}`)
+        toast({
+          title: "リンクをコピーしました",
+          description: "SNSでシェアしてください！",
+        })
+      } catch (error) {
+        toast({
+          title: "コピーに失敗しました",
+          description: "手動でリンクをコピーしてください",
+          variant: "destructive",
+        })
+      }
+    }
+  }
+
+  const latestSong = {
+    title: "無能総理誕生！",
+    originalSong: "勇者王誕生！",
+    artist: "遠藤正明",
+    releaseDate: "2025年1月",
+    satireDegree: 5,
+    description: "政治の無能さを痛烈に風刺した激辛レベルの楽曲。現政権への怒りを込めた渾身の一作。",
+    youtubeUrl: "https://youtu.be/dPy2YdzakgY",
+    thumbnail: "/images/munou-souri-tanjou-thumbnail.jpg",
+  }
+
+  const pastSongs = [
     {
       title: "米食う日まで",
-      type: "政治忍者オリジナル",
-      satireLevel: 4,
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年12月",
+      satireDegree: 4,
+      description: "食料問題と政治の関係を歌った社会派楽曲。庶民の生活苦を代弁する。",
+      youtubeUrl: "https://youtu.be/example2",
       thumbnail: "/images/kome-kuu-hi-made-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/eorqiDHnUtQ",
-      description: "政治忍者最新リリース曲",
     },
     {
       title: "俺ら国会さ行くだ",
-      type: "政治忍者オリジナル",
-      satireLevel: 5,
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年11月",
+      satireDegree: 3,
+      description: "政治参加の重要性を訴える楽曲。若者の政治離れに一石を投じる。",
+      youtubeUrl: "https://youtu.be/example3",
       thumbnail: "/images/orera-kokkai-sa-ikuda-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/SzAGUQPuMvE",
-      description: "政治忍者サードリリース曲",
     },
     {
       title: "税のブルース",
-      type: "政治忍者オリジナル",
-      satireLevel: 4,
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年10月",
+      satireDegree: 4,
+      description: "増税への不満を歌ったブルース調の楽曲。税制の矛盾を鋭く指摘。",
+      youtubeUrl: "https://youtu.be/example4",
       thumbnail: "/images/zei-no-blues-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/QwRxGfhfkkQ",
-      description: "政治忍者セカンドリリース曲",
     },
     {
-      title: "増税信者",
-      type: "お祭り忍者の替え歌",
-      satireLevel: 5,
+      title: "増税真理教",
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年9月",
+      satireDegree: 5,
+      description: "増税政策を宗教に例えた風刺楽曲。政府の税制政策への痛烈な批判。",
+      youtubeUrl: "https://youtu.be/example5",
       thumbnail: "/images/zouzei-shinja-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/Fv9G-kPJ0eE",
-      description: "政治忍者ファーストリリース曲",
     },
   ]
 
+  const SongCard = ({ song, isLatest = false }: { song: any; isLatest?: boolean }) => (
+    <Card
+      className={`${isLatest ? "bg-gradient-to-r from-red-900/50 to-black/50 border-ninja-red" : "bg-ninja-blue-dark border-ninja-green"} transition-all duration-300 hover:scale-105`}
+    >
+      <CardContent className="p-6">
+        <div className="relative mb-4">
+          <Image
+            src={song.thumbnail || "/placeholder.svg"}
+            alt={song.title}
+            width={300}
+            height={200}
+            className="w-full h-48 object-cover rounded-lg"
+          />
+          {isLatest && (
+            <div className="absolute top-2 right-2 bg-ninja-red text-white px-2 py-1 rounded text-xs font-bold">
+              最新
+            </div>
+          )}
+        </div>
+
+        <h3 className="text-xl font-bold mb-2">{song.title}</h3>
+
+        <div className="text-sm text-gray-300 mb-3">
+          <p>原曲: {song.originalSong}</p>
+          <p>歌手: {song.artist}</p>
+          <p>リリース: {song.releaseDate}</p>
+        </div>
+
+        <div className="flex items-center mb-3">
+          <span className="text-sm font-medium mr-2">風刺度:</span>
+          <div className="flex space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className={`text-lg ${i < song.satireDegree ? "text-ninja-red" : "text-gray-600"}`}>
+                🔥
+              </span>
+            ))}
+          </div>
+          <span className="ml-2 text-sm font-bold text-ninja-red">
+            {song.satireDegree === 5
+              ? "激辛"
+              : song.satireDegree === 4
+                ? "辛口"
+                : song.satireDegree === 3
+                  ? "中辛"
+                  : "甘口"}
+          </span>
+        </div>
+
+        <p className="text-sm text-gray-300 mb-4">{song.description}</p>
+
+        <div className="flex space-x-2">
+          <Button
+            onClick={() => window.open(song.youtubeUrl, "_blank")}
+            size="sm"
+            className="bg-ninja-red hover:bg-ninja-red-dark flex-1"
+          >
+            <Play className="mr-1 h-4 w-4" />
+            視聴
+          </Button>
+          <Button
+            onClick={() => handleShare(song.title, song.youtubeUrl)}
+            variant="outline"
+            size="sm"
+            className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black"
+          >
+            <Share2 className="mr-1 h-4 w-4" />
+            シェア
+          </Button>
+          <Button
+            onClick={() => window.open(song.youtubeUrl, "_blank")}
+            variant="ghost"
+            size="sm"
+            className="text-gray-400 hover:text-white"
+          >
+            <ExternalLink className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+
   return (
-    <section id="parody-songs" className="py-20 ninja-gradient">
+    <section id="songs" className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="text-ninja-red">政治忍者</span>の楽曲
+            替え歌<span className="text-ninja-red">アーカイブ</span>
           </h2>
           <div className="w-24 h-1 bg-ninja-green mx-auto"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <div className="bg-ninja-blue-dark p-8 rounded-lg border-l-4 border-ninja-green relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-ninja-red opacity-10 rounded-full -mr-12 -mt-12"></div>
+        <div className="max-w-6xl mx-auto">
+          <Tabs defaultValue="latest" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 bg-ninja-blue-dark">
+              <TabsTrigger value="latest" className="data-[state=active]:bg-ninja-red">
+                最新楽曲
+              </TabsTrigger>
+              <TabsTrigger value="past" className="data-[state=active]:bg-ninja-green">
+                過去の楽曲
+              </TabsTrigger>
+            </TabsList>
 
-            <h3 className="text-2xl font-bold mb-6 text-ninja-green">音楽の力</h3>
-
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-                <p>
-                  <span className="text-ninja-red font-bold">記憶に残る</span> -
-                  歌は言葉よりも記憶に残りやすく、政治的メッセージを伝えるのに効果的です。
-                </p>
-              </li>
-              <li className="flex items-start">
-                <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-                <p>
-                  <span className="text-ninja-red font-bold">共感を生む</span> -
-                  メロディに乗せることで、政治的なメッセージに親しみを持ってもらえます。
-                </p>
-              </li>
-              <li className="flex items-start">
-                <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-                <p>
-                  <span className="text-ninja-red font-bold">拡散しやすい</span> -
-                  SNSでシェアされやすく、若者の間で自然と広がります。
-                </p>
-              </li>
-              <li className="flex items-start">
-                <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-                <p>
-                  <span className="text-ninja-red font-bold">難しい内容をわかりやすく</span> -
-                  複雑な政治的課題を、歌詞を通じてシンプルに伝えることができます。
-                </p>
-              </li>
-              <li className="flex items-start">
-                <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-                <p>
-                  <span className="text-ninja-red font-bold">社会のアンテナを高める</span> -
-                  複雑な政治問題を分かりやすく伝え、広く社会の関心を集めることができます。若者を含む多くの人々が政治に興味を持つきっかけになります。
-                </p>
-              </li>
-              <li className="flex items-start">
-                <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-                <p>
-                  <span className="text-ninja-red font-bold">批判精神の醸成</span> -
-                  ユーモアを交えた風刺は、権力に対する健全な批判精神を育み、民主主義の基盤を強化します。固定観念を打ち破るパワーがあります。
-                </p>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-ninja-green">最新の楽曲</h3>
-              <div className="flex gap-2">
-                <Button
-                  variant={activeTab === "latest" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveTab("latest")}
-                  className={activeTab === "latest" ? "bg-ninja-red hover:bg-ninja-red-dark" : ""}
-                >
-                  最新曲
-                </Button>
-                <Button
-                  variant={activeTab === "previous" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveTab("previous")}
-                  className={activeTab === "previous" ? "bg-ninja-green hover:bg-ninja-green-dark" : ""}
-                >
-                  <History className="mr-1 h-4 w-4" /> 過去の曲
-                </Button>
+            <TabsContent value="latest" className="mt-8">
+              <div className="flex justify-center">
+                <div className="w-full max-w-md">
+                  <SongCard song={latestSong} isLatest={true} />
+                </div>
               </div>
-            </div>
+            </TabsContent>
 
-            {activeTab === "latest" ? (
-              <Card className="bg-black border-ninja-red mb-6">
-                <CardContent className="p-0">
-                  <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
-                    <a
-                      href="https://youtu.be/dPy2YdzakgY"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="absolute inset-0 flex items-center justify-center z-10"
-                    >
-                      <Button size="icon" className="w-16 h-16 rounded-full bg-ninja-red hover:bg-ninja-red-light">
-                        <Play className="h-8 w-8" />
-                      </Button>
-                    </a>
-                    <img
-                      src="/images/munou-souri-tanjou-thumbnail.jpg"
-                      alt="無能総理誕生！ - 政治忍者"
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-center mb-2">
-                      <h4 className="text-xl font-bold">「無能総理誕生！」</h4>
-                      <SatireLevel level={5} />
-                    </div>
-                    <p className="text-gray-300 mb-4">政治忍者超激辛リリース曲</p>
-                    <div className="flex space-x-3">
-                      <a href="https://youtu.be/dPy2YdzakgY" target="_blank" rel="noopener noreferrer">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white bg-transparent"
-                        >
-                          <Download className="mr-2 h-4 w-4" /> YouTube
-                        </Button>
-                      </a>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white bg-transparent"
-                        onClick={() => {
-                          navigator.clipboard.writeText("https://youtu.be/dPy2YdzakgY")
-                          // You could add a toast notification here
-                        }}
-                      >
-                        <Share2 className="mr-2 h-4 w-4" /> シェア
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {previousSongs.map((song, index) => (
-                  <Card key={index} className="bg-black border-ninja-red">
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 relative bg-gray-900 flex items-center justify-center rounded">
-                          <a
-                            href={song.youtubeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="absolute inset-0 flex items-center justify-center z-10"
-                          >
-                            <Button size="icon" className="w-8 h-8 rounded-full bg-ninja-red hover:bg-ninja-red-light">
-                              <Play className="h-4 w-4" />
-                            </Button>
-                          </a>
-                          <img
-                            src={song.thumbnail || "/placeholder.svg"}
-                            alt={`${song.title} - 政治忍者`}
-                            className="w-full h-full object-cover rounded"
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-center mb-1">
-                            <h5 className="font-bold">「{song.title}」</h5>
-                            <SatireLevel level={song.satireLevel as 1 | 2 | 3 | 4 | 5} />
-                          </div>
-                          <p className="text-sm text-gray-300 mb-2">{song.description}</p>
-                          <div className="flex space-x-2">
-                            <a href={song.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white text-xs bg-transparent"
-                              >
-                                <Download className="mr-1 h-3 w-3" /> YouTube
-                              </Button>
-                            </a>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white text-xs bg-transparent"
-                              onClick={() => {
-                                navigator.clipboard.writeText(song.youtubeUrl)
-                              }}
-                            >
-                              <Share2 className="mr-1 h-3 w-3" /> シェア
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+            <TabsContent value="past" className="mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {pastSongs.map((song, index) => (
+                  <SongCard key={index} song={song} />
                 ))}
               </div>
-            )}
-
-            <div className="flex justify-between items-center mb-4 mt-6">
-              <h3 className="text-2xl font-bold text-ninja-green">リリース予定曲</h3>
-              <div className="flex items-center gap-2">
-                <Flame className="h-4 w-4 text-red-500 fill-red-500" />
-                <span className="text-xs">風刺度合い</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {upcomingSongs.map((song, index) => (
-                <Card key={index} className="bg-black border-ninja-green">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center mb-1">
-                      <h5 className="font-bold">{song.title}</h5>
-                      <SatireLevel level={song.satireLevel as 1 | 2 | 3 | 4 | 5} />
-                    </div>
-                    <p className="text-xs text-gray-400">{song.type}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </section>

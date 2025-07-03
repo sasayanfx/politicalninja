@@ -2,165 +2,198 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Play, Share2, Download, Flame } from "lucide-react"
-import { ShurikenIcon } from "@/components/icons/shuriken-icon"
+import { Play, Share2, ExternalLink } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import Image from "next/image"
 
-// 風刺度合いを表示するコンポーネント
-const SatireLevel = ({ level }: { level: 1 | 2 | 3 | 4 | 5 }) => {
-  const labels = {
-    1: "ピリ辛",
-    2: "辛め",
-    3: "中辛",
-    4: "大辛",
-    5: "激辛",
+export default function SongArchiveSection() {
+  const { toast } = useToast()
+
+  const handleShare = async (title: string, url: string) => {
+    const text = `🎵 ${title} - 政治忍者の替え歌をチェック！`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: text, url })
+      } catch (error) {
+        // ユーザーがキャンセルした場合など
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${text} ${url}`)
+        toast({
+          title: "リンクをコピーしました",
+          description: "SNSでシェアしてください！",
+        })
+      } catch (error) {
+        toast({
+          title: "コピーに失敗しました",
+          description: "手動でリンクをコピーしてください",
+          variant: "destructive",
+        })
+      }
+    }
   }
 
-  return (
-    <div className="flex items-center gap-1">
-      <div className="flex">
-        {Array.from({ length: level }).map((_, i) => (
-          <Flame key={i} className="h-4 w-4 text-red-500 fill-red-500" />
-        ))}
-        {Array.from({ length: 5 - level }).map((_, i) => (
-          <Flame key={i + level} className="h-4 w-4 text-gray-400" />
-        ))}
-      </div>
-      <span className="text-xs ml-1">{labels[level]}</span>
-    </div>
-  )
-}
-
-// 楽曲アーカイブセクション
-export default function SongArchiveSection() {
-  // 過去の楽曲データ
-  const releasedSongs = [
+  const songs = [
     {
       title: "無能総理誕生！",
-      type: "政治忍者オリジナル",
-      satireLevel: 5,
-      thumbnail: "/images/munou-souri-tanjou-thumbnail.jpg",
+      originalSong: "勇者王誕生！",
+      artist: "遠藤正明",
+      releaseDate: "2025年1月",
+      satireDegree: 5,
+      description: "政治の無能さを痛烈に風刺した激辛レベルの楽曲。現政権への怒りを込めた渾身の一作。",
       youtubeUrl: "https://youtu.be/dPy2YdzakgY",
-      description: "政治忍者超激辛リリース曲",
-      releaseDate: "2025年7月",
+      thumbnail: "/images/munou-souri-tanjou-thumbnail.jpg",
+      isLatest: true,
     },
     {
       title: "米食う日まで",
-      type: "政治忍者オリジナル",
-      satireLevel: 4,
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年12月",
+      satireDegree: 4,
+      description: "食料問題と政治の関係を歌った社会派楽曲。庶民の生活苦を代弁する。",
+      youtubeUrl: "https://youtu.be/example2",
       thumbnail: "/images/kome-kuu-hi-made-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/eorqiDHnUtQ",
-      description: "政治忍者最新リリース曲",
-      releaseDate: "2025年6月",
     },
     {
       title: "俺ら国会さ行くだ",
-      type: "政治忍者オリジナル",
-      satireLevel: 5,
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年11月",
+      satireDegree: 3,
+      description: "政治参加の重要性を訴える楽曲。若者の政治離れに一石を投じる。",
+      youtubeUrl: "https://youtu.be/example3",
       thumbnail: "/images/orera-kokkai-sa-ikuda-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/SzAGUQPuMvE",
-      description: "政治忍者サードリリース曲",
-      releaseDate: "2025年6月",
     },
     {
       title: "税のブルース",
-      type: "政治忍者オリジナル",
-      satireLevel: 4,
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年10月",
+      satireDegree: 4,
+      description: "増税への不満を歌ったブルース調の楽曲。税制の矛盾を鋭く指摘。",
+      youtubeUrl: "https://youtu.be/example4",
       thumbnail: "/images/zei-no-blues-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/QwRxGfhfkkQ",
-      description: "政治忍者セカンドリリース曲",
-      releaseDate: "2025年6月",
     },
     {
-      title: "増税信者",
-      type: "お祭り忍者の替え歌",
-      satireLevel: 5,
+      title: "増税真理教",
+      originalSong: "津軽海峡冬景色",
+      artist: "石川さゆり",
+      releaseDate: "2024年9月",
+      satireDegree: 5,
+      description: "増税政策を宗教に例えた風刺楽曲。政府の税制政策への痛烈な批判。",
+      youtubeUrl: "https://youtu.be/example5",
       thumbnail: "/images/zouzei-shinja-thumbnail.jpg",
-      youtubeUrl: "https://youtu.be/Fv9G-kPJ0eE",
-      description: "政治忍者ファーストリリース曲",
-      releaseDate: "2025年6月",
     },
   ]
 
   return (
-    <section id="song-archive" className="py-20 bg-ninja-blue-dark">
+    <section id="archive" className="py-20 ninja-gradient">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             楽曲<span className="text-ninja-red">アーカイブ</span>
           </h2>
-          <div className="w-24 h-1 bg-ninja-green mx-auto"></div>
-          <p className="mt-4 text-lg">政治忍者がこれまでにリリースした楽曲の一覧です</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {releasedSongs.map((song, index) => (
-            <Card key={index} className="bg-black border-ninja-green overflow-hidden">
-              <CardContent className="p-0">
-                <div className="aspect-video relative bg-gray-900 flex items-center justify-center">
-                  <a
-                    href={song.youtubeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute inset-0 flex items-center justify-center z-10"
-                  >
-                    <Button size="icon" className="w-16 h-16 rounded-full bg-ninja-red hover:bg-ninja-red-light">
-                      <Play className="h-8 w-8" />
-                    </Button>
-                  </a>
-                  <img
-                    src={song.thumbnail || "/placeholder.svg"}
-                    alt={`${song.title} - 政治忍者`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="text-xl font-bold">「{song.title}」</h4>
-                    <SatireLevel level={song.satireLevel as 1 | 2 | 3 | 4 | 5} />
-                  </div>
-                  <div className="flex justify-between items-center mb-4">
-                    <p className="text-gray-300">{song.description}</p>
-                    <span className="text-xs text-gray-400">{song.releaseDate}</span>
-                  </div>
-                  <div className="flex space-x-3">
-                    <a href={song.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-white bg-transparent"
-                      >
-                        <Download className="mr-2 h-4 w-4" /> YouTube
-                      </Button>
-                    </a>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-ninja-red text-ninja-red hover:bg-ninja-red hover:text-white bg-transparent"
-                      onClick={() => {
-                        navigator.clipboard.writeText(song.youtubeUrl)
-                        // You could add a toast notification here
-                      }}
-                    >
-                      <Share2 className="mr-2 h-4 w-4" /> シェア
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <p className="text-lg mb-6">
-            <ShurikenIcon className="inline-block text-ninja-red mr-2" size={20} />
-            政治忍者の楽曲は随時追加されます。お楽しみに！
-            <ShurikenIcon className="inline-block text-ninja-red ml-2" size={20} />
+          <div className="w-24 h-1 bg-ninja-green mx-auto mb-4"></div>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            政治忍者が手がけた替え歌の全楽曲をご覧いただけます。それぞれの楽曲に込められた政治的メッセージをお楽しみください。
           </p>
-          <a href="https://www.youtube.com/channel/UC1Ef1iC6VeZiknEAOl0eI9g" target="_blank" rel="noopener noreferrer">
-            <Button className="bg-ninja-red hover:bg-ninja-red-dark">
-              <Play className="mr-2 h-4 w-4" /> YouTubeチャンネルを見る
-            </Button>
-          </a>
+        </div>
+
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {songs.map((song, index) => (
+              <Card
+                key={index}
+                className={`${song.isLatest ? "bg-gradient-to-r from-red-900/50 to-black/50 border-ninja-red" : "bg-ninja-blue-dark border-ninja-green"} transition-all duration-300 hover:scale-105`}
+              >
+                <CardContent className="p-6">
+                  <div className="relative mb-4">
+                    <Image
+                      src={song.thumbnail || "/placeholder.svg"}
+                      alt={song.title}
+                      width={300}
+                      height={200}
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                    {song.isLatest && (
+                      <div className="absolute top-2 right-2 bg-ninja-red text-white px-2 py-1 rounded text-xs font-bold">
+                        最新
+                      </div>
+                    )}
+                    {song.satireDegree === 5 && (
+                      <div className="absolute top-2 left-2 flex space-x-1">
+                        <span className="text-lg">🔥</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <h3 className="text-xl font-bold mb-2">{song.title}</h3>
+
+                  <div className="text-sm text-gray-300 mb-3">
+                    <p>原曲: {song.originalSong}</p>
+                    <p>歌手: {song.artist}</p>
+                    <p>リリース: {song.releaseDate}</p>
+                  </div>
+
+                  <div className="flex items-center mb-3">
+                    <span className="text-sm font-medium mr-2">風刺度:</span>
+                    <div className="flex space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className={`text-lg ${i < song.satireDegree ? "text-ninja-red" : "text-gray-600"}`}
+                        >
+                          🔥
+                        </span>
+                      ))}
+                    </div>
+                    <span className="ml-2 text-sm font-bold text-ninja-red">
+                      {song.satireDegree === 5
+                        ? "激辛"
+                        : song.satireDegree === 4
+                          ? "辛口"
+                          : song.satireDegree === 3
+                            ? "中辛"
+                            : "甘口"}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-gray-300 mb-4 line-clamp-3">{song.description}</p>
+
+                  <div className="flex space-x-2">
+                    <Button
+                      onClick={() => window.open(song.youtubeUrl, "_blank")}
+                      size="sm"
+                      className="bg-ninja-red hover:bg-ninja-red-dark flex-1"
+                    >
+                      <Play className="mr-1 h-4 w-4" />
+                      視聴
+                    </Button>
+                    <Button
+                      onClick={() => handleShare(song.title, song.youtubeUrl)}
+                      variant="outline"
+                      size="sm"
+                      className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black"
+                    >
+                      <Share2 className="mr-1 h-4 w-4" />
+                      シェア
+                    </Button>
+                    <Button
+                      onClick={() => window.open(song.youtubeUrl, "_blank")}
+                      variant="ghost"
+                      size="sm"
+                      className="text-gray-400 hover:text-white"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </section>

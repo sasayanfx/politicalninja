@@ -223,9 +223,9 @@ export default function HeroSection() {
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <a href="https://youtu.be/dPy2YdzakgY" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.youtube.com/watch?v=OUWq0kXn7PE" target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-ninja-red hover:bg-ninja-red-dark relative overflow-hidden group">
-                <span className="relative z-10">最新曲「無能総理誕生！」を聴く</span>
+                <span className="relative z-10">最新曲「政治改革ジャパン」を聴く</span>
                 <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
               </Button>
             </a>

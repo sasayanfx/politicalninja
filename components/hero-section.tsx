@@ -3,8 +3,9 @@
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Twitter, Instagram } from "lucide-react"
+import { Twitter, Instagram, Music, Calendar, Flame } from "lucide-react"
 import { LineIcon } from "@/components/icons/line-icon"
+import { Badge } from "@/components/ui/badge"
 
 export default function HeroSection() {
   const [scrollY, setScrollY] = useState(0)
@@ -218,14 +219,39 @@ export default function HeroSection() {
             政治忍者、参上。
           </p>
 
+          {/* Latest Song Info部分を更新 */}
+          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-ninja-green/30">
+            <div className="flex items-center gap-3 mb-3">
+              <Badge className="bg-ninja-red text-white">最新</Badge>
+              <h3 className="text-xl font-bold text-white">増税ループ</h3>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-3">
+              <div className="flex items-center gap-1">
+                <Music className="w-4 h-4" />
+                <span>原曲: フレデリック - オドループ</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                <span>2025年7月</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Flame className="w-4 h-4 text-ninja-red" />
+                <span>風刺度: 🔥🔥🔥 中辛</span>
+              </div>
+            </div>
+            <p className="text-gray-300 text-sm">
+              増税の無限ループに陥った日本の現状を痛烈に風刺した中辛レベルの楽曲。政府の税制政策への怒りを込めた一作。
+            </p>
+          </div>
+
           <div
             className={`flex flex-wrap gap-4 transition-all duration-1000 delay-300 ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <a href="https://www.youtube.com/watch?v=OUWq0kXn7PE" target="_blank" rel="noopener noreferrer">
+            <a href="https://youtu.be/f9oIlc3IjjA" target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-ninja-red hover:bg-ninja-red-dark relative overflow-hidden group">
-                <span className="relative z-10">最新曲「政治改革ジャパン」を聴く</span>
+                <span className="relative z-10">最新曲「増税ループ」を聴く</span>
                 <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
               </Button>
             </a>

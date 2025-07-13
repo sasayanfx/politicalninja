@@ -52,14 +52,15 @@ export default function ParodySongsSection() {
   }
 
   const latestSong = {
-    title: "政治改革ジャパン",
-    originalSong: "宇宙刑事ギャバン",
-    artist: "串田アキラ",
-    releaseDate: "2025年1月",
-    satireDegree: 1,
-    description: "政治改革への願いを込めたピリ辛レベルの楽曲。希望と現実のギャップを歌う。",
-    youtubeUrl: "https://www.youtube.com/watch?v=OUWq0kXn7PE",
-    thumbnail: "/images/seiji-kaikaku-japan-thumbnail.jpg",
+    title: "増税ループ",
+    originalSong: "オドループ",
+    artist: "フレデリック",
+    releaseDate: "2025年7月",
+    satireDegree: 3,
+    description:
+      "増税の無限ループに陥った日本の現状を痛烈に風刺した中辛レベルの楽曲。政府の税制政策への怒りを込めた一作。",
+    youtubeUrl: "https://youtu.be/f9oIlc3IjjA",
+    thumbnail: "/images/zouzei-loop-thumbnail.jpg",
   }
 
   const SongCard = ({ song, isLatest = false }: { song: any; isLatest?: boolean }) => (

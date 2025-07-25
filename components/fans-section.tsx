@@ -76,7 +76,7 @@ export default function FansSection() {
       console.log("Sending data:", submitData)
       setDebugInfo("Formspreeに送信中...")
 
-      const response = await fetch("https://formspree.io/f/xdkogqpz", {
+      const response = await fetch("https://formspree.io/f/xkgrzakz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ShurikenIcon } from "@/components/icons/shuriken-icon"
-import { Mail, MessageCircle, Music, Users, Send } from "lucide-react"
+import { Mail, MessageCircle, Music, Users, Send, AlertCircle, ExternalLink } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import StaticComments from "@/components/static-comments"
 
@@ -23,28 +23,75 @@ export default function FansSection() {
     politicalTopic: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [debugInfo, setDebugInfo] = useState<string>("")
   const { toast } = useToast()
+
+  const getMessageTypeLabel = (type: string) => {
+    switch (type) {
+      case "fan_letter":
+        return "ファンレター"
+      case "song_request":
+        return "楽曲リクエスト"
+      case "political_interest":
+        return "政治的関心事"
+      default:
+        return "メッセージ"
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setDebugInfo("")
 
     try {
-      // Formspreeを使用してメール送信
+      // バリデーション
+      if (!formData.ninjaName.trim() || !formData.message.trim()) {
+        toast({
+          title: "入力エラー",
+          description: "忍者ネームとメッセージは必須です。",
+          variant: "destructive",
+        })
+        setIsSubmitting(false)
+        return
+      }
+
+      // デバッグ情報を設定
+      setDebugInfo("送信中...")
+
+      // Formspreeに送信するデータを準備
+      const submitData = {
+        name: formData.ninjaName,
+        email: "noreply@politicalninja.com", // ダミーメール（Formspreeで必要な場合）
+        ninja_name: formData.ninjaName,
+        message_type: getMessageTypeLabel(formData.messageType),
+        message: formData.message,
+        song_request: formData.songRequest || "なし",
+        political_topic: formData.politicalTopic || "なし",
+        _subject: `政治忍者サイト - ${getMessageTypeLabel(formData.messageType)} from ${formData.ninjaName}`,
+        _replyto: "seijixninja@gmail.com",
+        _next: window.location.href, // 送信後のリダイレクト先
+      }
+
+      console.log("Sending data:", submitData)
+      setDebugInfo("Formspreeに送信中...")
+
       const response = await fetch("https://formspree.io/f/xdkogqpz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify({
-          ninja_name: formData.ninjaName,
-          message_type: formData.messageType,
-          message: formData.message,
-          song_request: formData.songRequest,
-          political_topic: formData.politicalTopic,
-          _subject: `政治忍者サイト - ${formData.messageType === "fan_letter" ? "ファンレター" : formData.messageType === "song_request" ? "楽曲リクエスト" : "政治的関心"}`,
-        }),
+        body: JSON.stringify(submitData),
       })
+
+      console.log("Response status:", response.status)
+      console.log("Response headers:", response.headers)
+
+      const responseText = await response.text()
+      console.log("Response text:", responseText)
+
+      setDebugInfo(`レスポンス: ${response.status} - ${responseText.substring(0, 100)}`)
 
       if (response.ok) {
         toast({
@@ -60,14 +107,28 @@ export default function FansSection() {
           songRequest: "",
           politicalTopic: "",
         })
+        setDebugInfo("送信完了！")
       } else {
-        throw new Error("送信に失敗しました")
+        // エラーレスポンスの詳細を表示
+        let errorMessage = "送信に失敗しました"
+        try {
+          const errorData = JSON.parse(responseText)
+          errorMessage = errorData.error || errorData.message || errorMessage
+        } catch {
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
+        }
+
+        throw new Error(errorMessage)
       }
     } catch (error) {
       console.error("Error sending message:", error)
+      const errorMessage = error instanceof Error ? error.message : "不明なエラー"
+
+      setDebugInfo(`エラー: ${errorMessage}`)
+
       toast({
         title: "送信に失敗しました",
-        description: "しばらく時間をおいて再度お試しください。",
+        description: `エラー: ${errorMessage}`,
         variant: "destructive",
       })
     } finally {
@@ -77,6 +138,25 @@ export default function FansSection() {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  // 直接メールクライアントを開く関数
+  const openEmailClient = () => {
+    const subject = encodeURIComponent(
+      `政治忍者サイト - ${getMessageTypeLabel(formData.messageType)} from ${formData.ninjaName}`,
+    )
+    const body = encodeURIComponent(`
+忍者ネーム: ${formData.ninjaName}
+メッセージタイプ: ${getMessageTypeLabel(formData.messageType)}
+
+メッセージ:
+${formData.message}
+
+${formData.songRequest ? `楽曲リクエスト: ${formData.songRequest}` : ""}
+${formData.politicalTopic ? `政治的関心事: ${formData.politicalTopic}` : ""}
+    `)
+
+    window.location.href = `mailto:seijixninja@gmail.com?subject=${subject}&body=${body}`
   }
 
   return (
@@ -195,16 +275,40 @@ export default function FansSection() {
                   </div>
                 )}
 
-                <Button type="submit" disabled={isSubmitting} className="w-full bg-ninja-red hover:bg-ninja-red-dark">
-                  {isSubmitting ? (
-                    "送信中..."
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      メール送信 🥷
-                    </>
-                  )}
-                </Button>
+                {/* デバッグ情報表示 */}
+                {debugInfo && (
+                  <div className="p-3 bg-gray-800 rounded border text-xs text-gray-300">
+                    <div className="flex items-center mb-1">
+                      <AlertCircle className="w-4 h-4 mr-1" />
+                      デバッグ情報:
+                    </div>
+                    <div className="font-mono">{debugInfo}</div>
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Button type="submit" disabled={isSubmitting} className="w-full bg-ninja-red hover:bg-ninja-red-dark">
+                    {isSubmitting ? (
+                      "送信中..."
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        メール送信 🥷
+                      </>
+                    )}
+                  </Button>
+
+                  {/* フォールバック：直接メールクライアントを開く */}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={openEmailClient}
+                    className="w-full border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black bg-transparent"
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    メールクライアントで送信
+                  </Button>
+                </div>
               </form>
             </CardContent>
           </Card>

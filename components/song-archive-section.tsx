@@ -37,6 +37,66 @@ export default function SongArchiveSection() {
 
   const songs = [
     {
+      title: "あー開票中",
+      originalSong: "あー夏休み",
+      artist: "TUBE",
+      releaseDate: "2025年8月",
+      satireDegree: 4,
+      description:
+        "参院選の深夜の不信な票の動きを不正選挙と痛烈に風刺した大辛レベルの楽曲。選挙管理委員会への怒りを込めた一作。",
+      youtubeUrl: "https://youtu.be/4QXUmQjvkvY",
+      thumbnail: "/images/aa-kaihyouchuu-thumbnail.jpg",
+      isLatest: true,
+    },
+    {
+      title: "世界中の議員よりきっと",
+      originalSong: "世界中の誰よりきっと",
+      artist: "中山美穂&WANDS",
+      releaseDate: "2025年8月",
+      satireDegree: 4,
+      description:
+        "高すぎる議員報酬を貰いながら議会で昼寝する議員を痛烈に風刺した大辛レベルの楽曲。国会議員への怒りを込めた一作。",
+      youtubeUrl: "https://youtu.be/pWRnYAaYJCI",
+      thumbnail: "/images/sekaijuu-no-giin-yori-kitto-thumbnail.jpg",
+      isLatest: false,
+    },
+    {
+      title: "石破よGoodbye！",
+      originalSong: "キン肉マンGoFight！",
+      artist: "串田アキラ",
+      releaseDate: "2025年7月",
+      satireDegree: 4,
+      description:
+        "3連敗でも辞任しない石破首相へのレクイエムを痛烈に風刺した大辛レベルの楽曲。政府の税制政策への怒りを込めた一作。",
+      youtubeUrl: "https://youtu.be/uKQFZwAokw0",
+      thumbnail: "/images/ishiba-goodbye-kinnikuman-thumbnail.jpg",
+      isLatest: false,
+    },
+    {
+      title: "自民と財務省のマネーゲーム",
+      originalSong: "男と女のラブゲーム",
+      artist: "津々美洋",
+      releaseDate: "2025年7月",
+      satireDegree: 5,
+      description:
+        "増税一辺倒の財務省とその傀儡の自民党の現状を痛烈に風刺した激辛レベルの楽曲。政府の税制政策への怒りを込めた一作。",
+      youtubeUrl: "https://youtu.be/6TtKe69qICA",
+      thumbnail: "/images/jimin-zaimusho-money-game-thumbnail.jpg",
+      isLatest: false,
+    },
+    {
+      title: "増税ループ",
+      originalSong: "オドループ",
+      artist: "フレデリック",
+      releaseDate: "2025年7月",
+      satireDegree: 3,
+      description:
+        "増税の無限ループに陥った日本の現状を痛烈に風刺した中辛レベルの楽曲。政府の税制政策への怒りを込めた一作。",
+      youtubeUrl: "https://youtu.be/f9oIlc3IjjA",
+      thumbnail: "/images/zouzei-loop-thumbnail.jpg",
+      isLatest: false,
+    },
+    {
       title: "無能総理誕生！",
       originalSong: "勇者王誕生！",
       artist: "遠藤正明",
@@ -45,7 +105,7 @@ export default function SongArchiveSection() {
       description: "総理の無能さを痛烈に風刺した激辛レベルの楽曲。現政権への怒りを込めた渾身の一作。",
       youtubeUrl: "https://youtu.be/dPy2YdzakgY",
       thumbnail: "/images/munou-souri-tanjou-thumbnail.jpg",
-      isLatest: true,
+      isLatest: false,
     },
     {
       title: "米食う日まで",
@@ -56,6 +116,7 @@ export default function SongArchiveSection() {
       description: "令和の米騒動問題と政治の関係を歌った社会派楽曲。庶民の生活苦を代弁する。",
       youtubeUrl: "https://youtu.be/example2",
       thumbnail: "/images/kome-kuu-hi-made-thumbnail.jpg",
+      isLatest: false,
     },
     {
       title: "俺ら国会さ行くだ",
@@ -66,6 +127,7 @@ export default function SongArchiveSection() {
       description: "現在の政治的問題を提起し、政治参加の重要性を訴える楽曲。若者の政治離れに一石を投じる。",
       youtubeUrl: "https://youtu.be/example3",
       thumbnail: "/images/orera-kokkai-sa-ikuda-thumbnail.jpg",
+      isLatest: false,
     },
     {
       title: "税のブルース",
@@ -76,6 +138,7 @@ export default function SongArchiveSection() {
       description: "増税への不満を歌ったブルース調の楽曲。税制の矛盾を鋭く指摘。",
       youtubeUrl: "https://youtu.be/example4",
       thumbnail: "/images/zei-no-blues-thumbnail.jpg",
+      isLatest: false,
     },
     {
       title: "増税信者",
@@ -86,6 +149,7 @@ export default function SongArchiveSection() {
       description: "とにかく税金が多岐に渡り、高すぎる問題を訴える風刺楽曲。政府の税制政策への痛烈な批判。",
       youtubeUrl: "https://youtu.be/example5",
       thumbnail: "/images/zouzei-shinja-thumbnail.jpg",
+      isLatest: false,
     },
   ]
 
@@ -154,7 +218,7 @@ export default function SongArchiveSection() {
                       {song.satireDegree === 5
                         ? "激辛"
                         : song.satireDegree === 4
-                          ? "辛口"
+                          ? "大辛"
                           : song.satireDegree === 3
                             ? "中辛"
                             : "甘口"}

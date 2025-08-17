@@ -3,132 +3,93 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { ShurikenIcon } from "@/components/icons/shuriken-icon"
-import { Mail, MessageCircle, Music, Users, Send, AlertCircle, ExternalLink } from "lucide-react"
+import { Label } from "@/components/ui/label"
+import { Mail, Send, ExternalLink } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import StaticComments from "@/components/static-comments"
 
 export default function FansSection() {
   const [formData, setFormData] = useState({
-    ninjaName: "",
-    messageType: "fan_letter",
+    name: "",
+    email: "",
     message: "",
-    songRequest: "",
-    politicalTopic: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [debugInfo, setDebugInfo] = useState<string>("")
+
   const { toast } = useToast()
 
-  const getMessageTypeLabel = (type: string) => {
-    switch (type) {
-      case "fan_letter":
-        return "ファンレター"
-      case "song_request":
-        return "楽曲リクエスト"
-      case "political_interest":
-        return "政治的関心事"
-      default:
-        return "メッセージ"
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setDebugInfo("")
+    setSubmitStatus("idle")
+    setDebugInfo("送信を開始しています...")
 
     try {
       // バリデーション
-      if (!formData.ninjaName.trim() || !formData.message.trim()) {
-        toast({
-          title: "入力エラー",
-          description: "忍者ネームとメッセージは必須です。",
-          variant: "destructive",
-        })
-        setIsSubmitting(false)
-        return
+      if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+        throw new Error("すべてのフィールドを入力してください")
       }
 
-      // デバッグ情報を設定
-      setDebugInfo("送信中...")
-
-      // Formspreeに送信するデータを準備
-      const submitData = {
-        name: formData.ninjaName,
-        email: "noreply@politicalninja.com", // ダミーメール（Formspreeで必要な場合）
-        ninja_name: formData.ninjaName,
-        message_type: getMessageTypeLabel(formData.messageType),
-        message: formData.message,
-        song_request: formData.songRequest || "なし",
-        political_topic: formData.politicalTopic || "なし",
-        _subject: `政治忍者サイト - ${getMessageTypeLabel(formData.messageType)} from ${formData.ninjaName}`,
-        _replyto: "seijixninja@gmail.com",
-        _next: window.location.href, // 送信後のリダイレクト先
+      // メールアドレスの簡単なバリデーション
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(formData.email)) {
+        throw new Error("有効なメールアドレスを入力してください")
       }
 
-      console.log("Sending data:", submitData)
       setDebugInfo("Formspreeに送信中...")
 
       const response = await fetch("https://formspree.io/f/xkgrzakz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
-        body: JSON.stringify(submitData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `政治忍者ファンサイトからのメッセージ - ${formData.name}`,
+        }),
       })
 
-      console.log("Response status:", response.status)
-      console.log("Response headers:", response.headers)
+      setDebugInfo(`レスポンス受信: ${response.status} ${response.statusText}`)
 
-      const responseText = await response.text()
-      console.log("Response text:", responseText)
-
-      setDebugInfo(`レスポンス: ${response.status} - ${responseText.substring(0, 100)}`)
-
-      if (response.ok) {
-        toast({
-          title: "メッセージを送信しました！",
-          description: "💌 メールで直接お送りしました。良い内容は手動でサイトに掲載させていただきます。",
-        })
-
-        // フォームをリセット
-        setFormData({
-          ninjaName: "",
-          messageType: "fan_letter",
-          message: "",
-          songRequest: "",
-          politicalTopic: "",
-        })
-        setDebugInfo("送信完了！")
-      } else {
-        // エラーレスポンスの詳細を表示
-        let errorMessage = "送信に失敗しました"
-        try {
-          const errorData = JSON.parse(responseText)
-          errorMessage = errorData.error || errorData.message || errorMessage
-        } catch {
-          errorMessage = `HTTP ${response.status}: ${response.statusText}`
-        }
-
-        throw new Error(errorMessage)
+      if (!response.ok) {
+        const errorText = await response.text()
+        setDebugInfo(`エラー詳細: ${errorText}`)
+        throw new Error(`送信に失敗しました (${response.status}): ${response.statusText}`)
       }
-    } catch (error) {
-      console.error("Error sending message:", error)
-      const errorMessage = error instanceof Error ? error.message : "不明なエラー"
 
-      setDebugInfo(`エラー: ${errorMessage}`)
+      const responseData = await response.json()
+      setDebugInfo(`送信成功: ${JSON.stringify(responseData)}`)
+
+      setSubmitStatus("success")
+      setFormData({ name: "", email: "", message: "" })
+
+      toast({
+        title: "メッセージを送信しました！",
+        description: "政治忍者からの返信をお待ちください。",
+      })
+    } catch (error) {
+      console.error("送信エラー:", error)
+      setSubmitStatus("error")
+      setDebugInfo(`エラー: ${error instanceof Error ? error.message : "不明なエラー"}`)
 
       toast({
         title: "送信に失敗しました",
-        description: `エラー: ${errorMessage}`,
+        description: error instanceof Error ? error.message : "不明なエラーが発生しました",
         variant: "destructive",
       })
     } finally {
@@ -136,196 +97,199 @@ export default function FansSection() {
     }
   }
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  // 直接メールクライアントを開く関数
-  const openEmailClient = () => {
-    const subject = encodeURIComponent(
-      `政治忍者サイト - ${getMessageTypeLabel(formData.messageType)} from ${formData.ninjaName}`,
-    )
+  const handleEmailClient = () => {
+    const subject = encodeURIComponent("政治忍者への応援メッセージ")
     const body = encodeURIComponent(`
-忍者ネーム: ${formData.ninjaName}
-メッセージタイプ: ${getMessageTypeLabel(formData.messageType)}
+お名前: ${formData.name}
+メールアドレス: ${formData.email}
 
 メッセージ:
 ${formData.message}
 
-${formData.songRequest ? `楽曲リクエスト: ${formData.songRequest}` : ""}
-${formData.politicalTopic ? `政治的関心事: ${formData.politicalTopic}` : ""}
+---
+政治忍者ファンサイトより
     `)
-
-    window.location.href = `mailto:seijixninja@gmail.com?subject=${subject}&body=${body}`
+    window.open(`mailto:seijixninja@gmail.com?subject=${subject}&body=${body}`)
   }
 
   return (
-    <section id="fans" className="py-20 bg-ninja-blue">
+    <section id="fans" className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            忍者<span className="text-ninja-red">ファン</span>の声
+            ファン<span className="text-ninja-red">メッセージ</span>
           </h2>
-          <div className="w-24 h-1 bg-ninja-green mx-auto"></div>
+          <div className="w-24 h-1 bg-ninja-green mx-auto mb-4"></div>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            政治忍者への応援メッセージ、楽曲リクエスト、政治への想いなど、お気軽にお送りください。
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* メッセージ送信フォーム */}
-          <Card className="bg-ninja-blue-dark border-ninja-green">
-            <CardHeader>
-              <CardTitle className="flex items-center text-ninja-green">
-                <Mail className="mr-2 h-5 w-5" />
-                メッセージを送る
-              </CardTitle>
-              <div className="text-sm text-gray-300 space-y-1">
-                <p>💌 メールに直接届きます</p>
-                <p>📝 良い内容は手動でサイトに掲載</p>
-                <p>🔒 個人情報は安全に管理</p>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Label htmlFor="ninjaName" className="text-white">
-                    忍者ネーム *
-                  </Label>
-                  <Input
-                    id="ninjaName"
-                    value={formData.ninjaName}
-                    onChange={(e) => handleInputChange("ninjaName", e.target.value)}
-                    placeholder="例: 影丸、月光、風雲..."
-                    required
-                    className="bg-ninja-blue border-ninja-green text-white placeholder:text-gray-400"
-                  />
-                </div>
-
-                <div>
-                  <Label className="text-white">メッセージの種類 *</Label>
-                  <RadioGroup
-                    value={formData.messageType}
-                    onValueChange={(value) => handleInputChange("messageType", value)}
-                    className="mt-2"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="fan_letter" id="fan_letter" />
-                      <Label htmlFor="fan_letter" className="flex items-center text-white">
-                        <MessageCircle className="mr-2 h-4 w-4 text-ninja-green" />
-                        ファンレター
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="song_request" id="song_request" />
-                      <Label htmlFor="song_request" className="flex items-center text-white">
-                        <Music className="mr-2 h-4 w-4 text-ninja-red" />
-                        楽曲リクエスト
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="political_interest" id="political_interest" />
-                      <Label htmlFor="political_interest" className="flex items-center text-white">
-                        <Users className="mr-2 h-4 w-4 text-blue-400" />
-                        政治的関心事
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div>
-                  <Label htmlFor="message" className="text-white">
-                    メッセージ *
-                  </Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => handleInputChange("message", e.target.value)}
-                    placeholder="政治忍者への応援メッセージ、感想、意見などをお聞かせください..."
-                    required
-                    rows={4}
-                    className="bg-ninja-blue border-ninja-green text-white placeholder:text-gray-400"
-                  />
-                </div>
-
-                {formData.messageType === "song_request" && (
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* メッセージフォーム */}
+            <Card className="bg-ninja-blue-dark border-ninja-green">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-ninja-green">
+                  <Mail className="h-5 w-5" />
+                  メッセージを送る
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <Label htmlFor="songRequest" className="text-white">
-                      リクエスト楽曲
+                    <Label htmlFor="name" className="text-white">
+                      お名前 *
                     </Label>
                     <Input
-                      id="songRequest"
-                      value={formData.songRequest}
-                      onChange={(e) => handleInputChange("songRequest", e.target.value)}
-                      placeholder="替え歌にしてほしい楽曲名"
-                      className="bg-ninja-blue border-ninja-green text-white placeholder:text-gray-400"
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-black border-gray-600 text-white focus:border-ninja-green"
+                      placeholder="山田太郎"
                     />
                   </div>
-                )}
 
-                {formData.messageType === "political_interest" && (
                   <div>
-                    <Label htmlFor="politicalTopic" className="text-white">
-                      政治的関心事
+                    <Label htmlFor="email" className="text-white">
+                      メールアドレス *
                     </Label>
                     <Input
-                      id="politicalTopic"
-                      value={formData.politicalTopic}
-                      onChange={(e) => handleInputChange("politicalTopic", e.target.value)}
-                      placeholder="関心のある政治的テーマ"
-                      className="bg-ninja-blue border-ninja-green text-white placeholder:text-gray-400"
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-black border-gray-600 text-white focus:border-ninja-green"
+                      placeholder="example@email.com"
                     />
                   </div>
-                )}
 
-                {/* デバッグ情報表示 */}
-                {debugInfo && (
-                  <div className="p-3 bg-gray-800 rounded border text-xs text-gray-300">
-                    <div className="flex items-center mb-1">
-                      <AlertCircle className="w-4 h-4 mr-1" />
-                      デバッグ情報:
-                    </div>
-                    <div className="font-mono">{debugInfo}</div>
+                  <div>
+                    <Label htmlFor="message" className="text-white">
+                      メッセージ *
+                    </Label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      rows={5}
+                      className="bg-black border-gray-600 text-white focus:border-ninja-green resize-none"
+                      placeholder="政治忍者への応援メッセージ、楽曲リクエスト、政治への想いなどをお聞かせください..."
+                    />
                   </div>
-                )}
 
-                <div className="space-y-2">
-                  <Button type="submit" disabled={isSubmitting} className="w-full bg-ninja-red hover:bg-ninja-red-dark">
-                    {isSubmitting ? (
-                      "送信中..."
-                    ) : (
-                      <>
-                        <Send className="mr-2 h-4 w-4" />
-                        メール送信 🥷
-                      </>
-                    )}
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="bg-ninja-red hover:bg-ninja-red-dark flex-1"
+                    >
+                      <Send className="mr-2 h-4 w-4" />
+                      {isSubmitting ? "送信中..." : "メッセージを送る"}
+                    </Button>
 
-                  {/* フォールバック：直接メールクライアントを開く */}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={openEmailClient}
-                    className="w-full border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black bg-transparent"
-                  >
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    メールクライアントで送信
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleEmailClient}
+                      className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black bg-transparent"
+                    >
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      メールクライアントで送信
+                    </Button>
+                  </div>
 
-          {/* 承認済みメッセージ表示 */}
-          <Card className="bg-ninja-blue-dark border-ninja-green">
-            <CardHeader>
-              <CardTitle className="flex items-center text-ninja-green">
-                <ShurikenIcon className="mr-2" size={20} />
-                忍者ファンからの声
-              </CardTitle>
-              <p className="text-sm text-gray-300">📝 手動で選ばれた素晴らしいメッセージたち</p>
-            </CardHeader>
-            <CardContent className="max-h-96 overflow-y-auto">
-              <StaticComments />
-            </CardContent>
-          </Card>
+                  {/* デバッグ情報表示 */}
+                  {debugInfo && (
+                    <div className="mt-4 p-3 bg-gray-800 rounded-lg">
+                      <p className="text-xs text-gray-300">デバッグ情報:</p>
+                      <p className="text-xs text-gray-400 font-mono">{debugInfo}</p>
+                    </div>
+                  )}
+
+                  {/* 送信状態表示 */}
+                  {submitStatus === "success" && (
+                    <div className="mt-4 p-3 bg-green-900/50 border border-green-500 rounded-lg">
+                      <p className="text-green-300 text-sm">✅ メッセージが正常に送信されました！</p>
+                    </div>
+                  )}
+
+                  {submitStatus === "error" && (
+                    <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-lg">
+                      <p className="text-red-300 text-sm">❌ 送信に失敗しました。再度お試しください。</p>
+                    </div>
+                  )}
+                </form>
+              </CardContent>
+            </Card>
+
+            {/* サイドバー情報 */}
+            <div className="space-y-6">
+              <Card className="bg-ninja-blue-dark border-ninja-green">
+                <CardHeader>
+                  <CardTitle className="text-ninja-green">お問い合わせについて</CardTitle>
+                </CardHeader>
+                <CardContent className="text-gray-300 space-y-3">
+                  <p className="text-sm">• 楽曲リクエストや政治的なテーマの提案</p>
+                  <p className="text-sm">• 政治忍者の活動への応援メッセージ</p>
+                  <p className="text-sm">• コラボレーションや出演依頼</p>
+                  <p className="text-sm">• その他、政治や社会問題に関するご意見</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-ninja-blue-dark border-ninja-green">
+                <CardHeader>
+                  <CardTitle className="text-ninja-green">返信について</CardTitle>
+                </CardHeader>
+                <CardContent className="text-gray-300 space-y-3">
+                  <p className="text-sm">いただいたメッセージには、政治忍者が直接目を通します。</p>
+                  <p className="text-sm">返信には数日お時間をいただく場合がございますが、必ずお返事いたします。</p>
+                  <p className="text-sm">緊急のお問い合わせは、SNSのDMもご利用ください。</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-ninja-blue-dark border-ninja-green">
+                <CardHeader>
+                  <CardTitle className="text-ninja-green">SNSでも繋がろう</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex flex-col space-y-2">
+                    <a
+                      href="https://x.com/seijixninja"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-2"
+                    >
+                      <span>🐦</span> X (Twitter): @seijixninja
+                    </a>
+                    <a
+                      href="https://instagram.com/seijixninja"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-pink-400 hover:text-pink-300 text-sm flex items-center gap-2"
+                    >
+                      <span>📸</span> Instagram: @seijixninja
+                    </a>
+                    <a
+                      href="https://line.me/R/ti/p/@470opewc"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-400 hover:text-green-300 text-sm flex items-center gap-2"
+                    >
+                      <span>💬</span> LINE: @470opewc
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </div>
     </section>

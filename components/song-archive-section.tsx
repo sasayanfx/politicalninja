@@ -37,6 +37,17 @@ export default function SongArchiveSection() {
 
   const songs = [
     {
+      title: "You Are！ZAIMU＝SHOW",
+      originalSong: "ウィーアー！",
+      artist: "きただにひろし",
+      releaseDate: "2025年8月",
+      satireDegree: 4,
+      description: "海外には大金バラまくのに財源がないと絶対に減税しない無能財務省に強烈パンチ！",
+      youtubeUrl: "https://youtu.be/8JEl3vHmRz4",
+      thumbnail: "/images/you-are-zaimu-show-thumbnail.jpg",
+      isLatest: true,
+    },
+    {
       title: "あー開票中",
       originalSong: "あー夏休み",
       artist: "TUBE",
@@ -46,7 +57,7 @@ export default function SongArchiveSection() {
         "参院選の深夜の不信な票の動きを不正選挙と痛烈に風刺した大辛レベルの楽曲。選挙管理委員会への怒りを込めた一作。",
       youtubeUrl: "https://youtu.be/4QXUmQjvkvY",
       thumbnail: "/images/aa-kaihyouchuu-thumbnail.jpg",
-      isLatest: true,
+      isLatest: false,
     },
     {
       title: "世界中の議員よりきっと",

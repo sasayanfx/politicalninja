@@ -223,12 +223,12 @@ export default function HeroSection() {
           <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-ninja-green/30">
             <div className="flex items-center gap-3 mb-3">
               <Badge className="bg-ninja-red text-white">最新</Badge>
-              <h3 className="text-xl font-bold text-white">You Are！ZAIMU＝SHOW</h3>
+              <h3 className="text-xl font-bold text-white">日本人</h3>
             </div>
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-3">
               <div className="flex items-center gap-1">
                 <Music className="w-4 h-4" />
-                <span>原曲: ウィーアー！</span>
+                <span>原曲: 異邦人</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
@@ -240,7 +240,7 @@ export default function HeroSection() {
               </div>
             </div>
             <p className="text-gray-300 text-sm">
-              海外には大金バラまくのに財源がないと絶対に減税しない無能財務省に強烈パンチ！
+              日本の美しい自然を破壊するメガソーラー建設に断固反対！真の日本人として立ち上がる時が来た。
             </p>
           </div>
 
@@ -249,9 +249,9 @@ export default function HeroSection() {
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <a href="https://youtu.be/8JEl3vHmRz4" target="_blank" rel="noopener noreferrer">
+            <a href="https://youtu.be/d9dS0G0HQkI" target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-ninja-red hover:bg-ninja-red-dark relative overflow-hidden group">
-                <span className="relative z-10">最新曲「You Are！ZAIMU＝SHOW」を聴く</span>
+                <span className="relative z-10">最新曲「日本人」を聴く</span>
                 <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
               </Button>
             </a>

@@ -37,6 +37,17 @@ export default function SongArchiveSection() {
 
   const songs = [
     {
+      title: "日本人",
+      originalSong: "異邦人",
+      artist: "久保田早紀",
+      releaseDate: "2025年8月",
+      satireDegree: 4,
+      description: "日本の美しい自然を破壊するメガソーラー建設に断固反対！真の日本人として立ち上がる時が来た。",
+      youtubeUrl: "https://youtu.be/d9dS0G0HQkI",
+      thumbnail: "/images/nihonjin-thumbnail.jpg",
+      isLatest: true,
+    },
+    {
       title: "You Are！ZAIMU＝SHOW",
       originalSong: "ウィーアー！",
       artist: "きただにひろし",
@@ -44,8 +55,8 @@ export default function SongArchiveSection() {
       satireDegree: 4,
       description: "海外には大金バラまくのに財源がないと絶対に減税しない無能財務省に強烈パンチ！",
       youtubeUrl: "https://youtu.be/8JEl3vHmRz4",
-      thumbnail: "/images/you-are-zaimu-show-thumbnail.jpg",
-      isLatest: true,
+      thumbnail: "/images/you-are-zaimu-show-updated-thumbnail.jpg",
+      isLatest: false,
     },
     {
       title: "あー開票中",

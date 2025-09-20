@@ -9,9 +9,12 @@ const getSupabaseClient = () => {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  console.log("Supabase URL:", url ? "設定済み" : "未設定")
-  console.log("Service Key:", serviceKey ? "設定済み" : "未設定")
-  console.log("Anon Key:", anonKey ? "設定済み" : "未設定")
+  // プロダクション環境では機密情報をログに出力しない
+  if (process.env.NODE_ENV === 'development') {
+    console.log("Supabase URL:", url ? "設定済み" : "未設定")
+    console.log("Service Key:", serviceKey ? "設定済み" : "未設定")
+    console.log("Anon Key:", anonKey ? "設定済み" : "未設定")
+  }
 
   if (!url) {
     console.error("Supabase URL is not set")
@@ -314,5 +317,49 @@ export async function checkTableExists() {
   } catch (error) {
     console.error("Error checking table:", error)
     return { exists: false, error: error instanceof Error ? error.message : "不明なエラー" }
+  }
+}
+
+// 投票テーブル存在確認
+export async function checkVotingTablesExist() {
+  console.log("checkVotingTablesExist called")
+
+  try {
+    const supabase = getSupabaseClient()
+
+    // song_votes テーブルの存在確認
+    const { data: votesData, error: votesError } = await supabase
+      .from("song_votes")
+      .select("count", { count: "exact" })
+      .limit(1)
+
+    // song_vote_stats ビューの存在確認
+    const { data: statsData, error: statsError } = await supabase
+      .from("song_vote_stats")
+      .select("*")
+      .limit(1)
+
+    const result = {
+      song_votes: {
+        exists: !votesError,
+        error: votesError?.message,
+        count: votesData
+      },
+      song_vote_stats: {
+        exists: !statsError,
+        error: statsError?.message,
+        data: statsData
+      }
+    }
+
+    console.log("Voting tables check result:", result)
+    return result
+  } catch (error) {
+    console.error("Error checking voting tables:", error)
+    return { 
+      error: error instanceof Error ? error.message : "不明なエラー",
+      song_votes: { exists: false },
+      song_vote_stats: { exists: false }
+    }
   }
 }

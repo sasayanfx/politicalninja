@@ -42,6 +42,7 @@ export default function SongArchiveSection() {
   const [loading, setLoading] = useState(true)
   const [voting, setVoting] = useState<string | null>(null)
   const [userId, setUserId] = useState<string>("")
+  const [dbError, setDbError] = useState<boolean>(false)
 
   // Initialize user ID and load data
   useEffect(() => {
@@ -52,15 +53,30 @@ export default function SongArchiveSection() {
       const id = getUserId()
       setUserId(id)
 
-      // 投票統計と ユーザーの投票履歴を並行して取得
-      const [statsResult, userVotesResult] = await Promise.all([getSongVoteStats(), getUserVotes(id)])
+      try {
+        // 投票統計と ユーザーの投票履歴を並行して取得
+        const [statsResult, userVotesResult] = await Promise.all([getSongVoteStats(), getUserVotes(id)])
 
-      if (statsResult.success) {
-        setVoteStats(statsResult.stats)
-      }
+        if (statsResult.success) {
+          setVoteStats(statsResult.stats)
+        } else {
+          console.warn("投票統計の取得に失敗:", statsResult.error)
+        }
 
-      if (userVotesResult.success) {
-        setUserVotes(userVotesResult.votes)
+        if (userVotesResult.success) {
+          setUserVotes(userVotesResult.votes)
+        } else {
+          console.warn("ユーザー投票履歴の取得に失敗:", userVotesResult.error)
+        }
+      } catch (error) {
+        console.error("データ初期化中にエラー:", error)
+        setDbError(true)
+        // Supabaseが設定されていない場合のエラーハンドリング
+        toast({
+          title: "データベース接続エラー",
+          description: "投票機能を利用するにはSupabaseの設定が必要です。",
+          variant: "destructive",
+        })
       }
 
       setLoading(false)
@@ -410,7 +426,7 @@ export default function SongArchiveSection() {
               const voteCount = voteCountMap[song.title] || 0
               const hasVoted = userVotes.some((vote) => vote.song_title === song.title)
               const votePercentage = totalVotes > 0 ? (voteCount / totalVotes) * 100 : 0
-              const canVote = !hasVoted && remainingVotes > 0
+              const canVote = !hasVoted && remainingVotes > 0 && !dbError
               const isVoting = voting === song.title
 
               return (
@@ -554,9 +570,11 @@ export default function SongArchiveSection() {
                         ? "投票中..."
                         : hasVoted
                           ? "投票済み"
-                          : remainingVotes > 0
-                            ? "お気に入りに投票"
-                            : "投票上限に達しました"}
+                          : dbError
+                            ? "データベース接続エラー"
+                            : remainingVotes > 0
+                              ? "お気に入りに投票"
+                              : "投票上限に達しました"}
                     </Button>
                   </CardContent>
                 </Card>

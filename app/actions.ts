@@ -187,6 +187,113 @@ export async function getApprovedMessages() {
   }
 }
 
+// 楽曲投票アクション
+export async function submitSongVote(userId: string, songTitle: string) {
+  console.log("submitSongVote called", { userId, songTitle })
+
+  try {
+    const supabase = getSupabaseClient()
+
+    // まず、ユーザーの現在の投票数を確認
+    const { data: existingVotes, error: countError } = await supabase
+      .from("song_votes")
+      .select("song_title")
+      .eq("user_id", userId)
+
+    if (countError) {
+      console.error("Error checking existing votes:", countError)
+      return { success: false, error: `投票確認エラー: ${countError.message}` }
+    }
+
+    // 投票上限チェック（3票まで）
+    if (existingVotes && existingVotes.length >= 3) {
+      return { success: false, error: "投票上限（3票）に達しています" }
+    }
+
+    // 同じ楽曲への重複投票チェック
+    const alreadyVoted = existingVotes?.some((vote) => vote.song_title === songTitle)
+    if (alreadyVoted) {
+      return { success: false, error: "この楽曲には既に投票済みです" }
+    }
+
+    // 投票を挿入
+    const { data, error } = await supabase
+      .from("song_votes")
+      .insert({
+        user_id: userId,
+        song_title: songTitle,
+      })
+      .select()
+
+    if (error) {
+      console.error("Supabase vote insert error:", error)
+      return { success: false, error: `投票エラー: ${error.message}` }
+    }
+
+    console.log("Vote insert successful:", data)
+    revalidatePath("/")
+
+    const remainingVotes = 3 - (existingVotes?.length || 0) - 1
+    return {
+      success: true,
+      message: `「${songTitle}」に投票しました！`,
+      remainingVotes,
+      userVotes: [...(existingVotes?.map((v) => v.song_title) || []), songTitle],
+    }
+  } catch (error) {
+    console.error("Error submitting vote:", error)
+    return { success: false, error: `エラーが発生しました: ${error instanceof Error ? error.message : "不明なエラー"}` }
+  }
+}
+
+// 投票統計の取得
+export async function getSongVoteStats() {
+  console.log("getSongVoteStats called")
+
+  try {
+    const supabase = getSupabaseClient()
+
+    const { data, error } = await supabase.from("song_vote_stats").select("*").order("vote_count", { ascending: false })
+
+    if (error) {
+      console.error("Error fetching vote stats:", error)
+      return { success: false, stats: [] }
+    }
+
+    console.log("Vote stats fetched:", data?.length || 0, "songs")
+    return { success: true, stats: data || [] }
+  } catch (error) {
+    console.error("Error fetching vote stats:", error)
+    return { success: false, stats: [] }
+  }
+}
+
+// ユーザーの投票履歴取得
+export async function getUserVotes(userId: string) {
+  console.log("getUserVotes called", { userId })
+
+  try {
+    const supabase = getSupabaseClient()
+
+    const { data, error } = await supabase
+      .from("song_votes")
+      .select("song_title, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+
+    if (error) {
+      console.error("Error fetching user votes:", error)
+      return { success: false, votes: [] }
+    }
+
+    console.log("User votes fetched:", data?.length || 0, "votes")
+    return { success: true, votes: data || [] }
+  } catch (error) {
+    console.error("Error fetching user votes:", error)
+    return { success: false, votes: [] }
+  }
+}
+
 // デバッグ用：テーブル存在確認
 export async function checkTableExists() {
   console.log("checkTableExists called")

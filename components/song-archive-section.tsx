@@ -2,12 +2,137 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Play, Share2, ExternalLink } from "lucide-react"
+import { Play, Share2, ExternalLink, Heart, TrendingUp, Vote, Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useState, useEffect } from "react"
 import Image from "next/image"
+import { submitSongVote, getSongVoteStats, getUserVotes } from "@/app/actions"
+import { getUserId } from "@/lib/user-id"
+
+interface Song {
+  title: string
+  originalSong: string
+  artist: string
+  releaseDate: string
+  satireDegree: number
+  description: string
+  youtubeUrl: string
+  thumbnail: string
+  isLatest: boolean
+}
+
+interface VoteStats {
+  song_title: string
+  vote_count: number
+  unique_voters: number
+}
+
+interface UserVote {
+  song_title: string
+  created_at: string
+}
+
+const VOTE_LIMIT = 3 // 一人あたりの投票上限
 
 export default function SongArchiveSection() {
   const { toast } = useToast()
+  const [voteStats, setVoteStats] = useState<VoteStats[]>([])
+  const [userVotes, setUserVotes] = useState<UserVote[]>([])
+  const [showResults, setShowResults] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [voting, setVoting] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string>("")
+
+  // Initialize user ID and load data
+  useEffect(() => {
+    const initializeData = async () => {
+      setLoading(true)
+
+      // ユーザーIDを取得
+      const id = getUserId()
+      setUserId(id)
+
+      // 投票統計と ユーザーの投票履歴を並行して取得
+      const [statsResult, userVotesResult] = await Promise.all([getSongVoteStats(), getUserVotes(id)])
+
+      if (statsResult.success) {
+        setVoteStats(statsResult.stats)
+      }
+
+      if (userVotesResult.success) {
+        setUserVotes(userVotesResult.votes)
+      }
+
+      setLoading(false)
+    }
+
+    initializeData()
+  }, [])
+
+  const handleVote = async (songTitle: string) => {
+    if (!userId) {
+      toast({
+        title: "エラー",
+        description: "ユーザーIDが取得できませんでした",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (userVotes.some((vote) => vote.song_title === songTitle)) {
+      toast({
+        title: "既に投票済みです",
+        description: "一つの楽曲には一度しか投票できません",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (userVotes.length >= VOTE_LIMIT) {
+      toast({
+        title: "投票上限に達しました",
+        description: `お一人様${VOTE_LIMIT}票までとなっております`,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setVoting(songTitle)
+
+    try {
+      const result = await submitSongVote(userId, songTitle)
+
+      if (result.success) {
+        // 投票成功時にローカル状態を更新
+        setUserVotes((prev) => [...prev, { song_title: songTitle, created_at: new Date().toISOString() }])
+
+        // 投票統計を再取得
+        const statsResult = await getSongVoteStats()
+        if (statsResult.success) {
+          setVoteStats(statsResult.stats)
+        }
+
+        toast({
+          title: "投票完了！",
+          description: result.message,
+        })
+      } else {
+        toast({
+          title: "投票に失敗しました",
+          description: result.error,
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "エラーが発生しました",
+        description: "投票処理中にエラーが発生しました",
+        variant: "destructive",
+      })
+    } finally {
+      setVoting(null)
+    }
+  }
 
   const handleShare = async (title: string, url: string) => {
     const text = `🎵 ${title} - 政治忍者の替え歌をチェック！`
@@ -35,7 +160,29 @@ export default function SongArchiveSection() {
     }
   }
 
-  const songs = [
+  const songs: Song[] = [
+    {
+      title: "国売られて",
+      originalSong: "魅せられて",
+      artist: "ジュディ・オング",
+      releaseDate: "2025年9月",
+      satireDegree: 5,
+      description: "海外バラマキ・移民断固反対！日本の国益を売り渡す政治への怒りを込めた激辛レベルの楽曲。",
+      youtubeUrl: "https://youtu.be/0gZ-PDBvbQA",
+      thumbnail: "/images/kuni-urarete-thumbnail.jpg",
+      isLatest: true,
+    },
+    {
+      title: "おどるキングボンビー",
+      originalSong: "おどるポンポコリン",
+      artist: "B.B.クィーンズ",
+      releaseDate: "2025年9月",
+      satireDegree: 4,
+      description: "海外には湯水のように税金をバラまくのに、国内の減税は絶対に拒否する石破総理への痛烈な批判！",
+      youtubeUrl: "https://youtu.be/Z07wUisPwKw",
+      thumbnail: "/images/odoru-king-bomby-thumbnail.jpg",
+      isLatest: false,
+    },
     {
       title: "日本人",
       originalSong: "異邦人",
@@ -45,7 +192,7 @@ export default function SongArchiveSection() {
       description: "日本の美しい自然を破壊するメガソーラー建設に断固反対！真の日本人として立ち上がる時が来た。",
       youtubeUrl: "https://youtu.be/d9dS0G0HQkI",
       thumbnail: "/images/nihonjin-thumbnail.jpg",
-      isLatest: true,
+      isLatest: false,
     },
     {
       title: "You Are！ZAIMU＝SHOW",
@@ -175,6 +322,38 @@ export default function SongArchiveSection() {
     },
   ]
 
+  // Create a map for easy vote count lookup
+  const voteCountMap = voteStats.reduce(
+    (acc, stat) => {
+      acc[stat.song_title] = stat.vote_count
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+
+  // Sort songs by vote count for ranking
+  const sortedSongs = [...songs].sort((a, b) => {
+    const votesA = voteCountMap[a.title] || 0
+    const votesB = voteCountMap[b.title] || 0
+    return votesB - votesA
+  })
+
+  const totalVotes = voteStats.reduce((sum, stat) => sum + stat.vote_count, 0)
+  const remainingVotes = VOTE_LIMIT - userVotes.length
+
+  if (loading) {
+    return (
+      <section id="archive" className="py-20 ninja-gradient">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-ninja-green" />
+            <p className="mt-4 text-gray-300">投票データを読み込み中...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section id="archive" className="py-20 ninja-gradient">
       <div className="container mx-auto px-4">
@@ -186,99 +365,203 @@ export default function SongArchiveSection() {
           <p className="text-gray-300 max-w-2xl mx-auto">
             政治忍者が手がけた替え歌の全楽曲をご覧いただけます。それぞれの楽曲に込められた政治的メッセージをお楽しみください。
           </p>
+
+          {/* Voting Status */}
+          <div className="mt-8 mb-6">
+            <div className="bg-ninja-blue-dark border border-ninja-green rounded-lg p-4 max-w-md mx-auto">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Vote className="h-5 w-5 text-ninja-green" />
+                <span className="text-lg font-bold text-ninja-green">投票ステータス</span>
+              </div>
+              <p className="text-white">
+                使用済み: <span className="text-ninja-red font-bold">{userVotes.length}</span> / {VOTE_LIMIT}票
+              </p>
+              {remainingVotes > 0 ? (
+                <p className="text-ninja-green text-sm mt-1">
+                  あと<span className="font-bold">{remainingVotes}票</span>投票できます
+                </p>
+              ) : (
+                <p className="text-yellow-400 text-sm mt-1">投票完了！ありがとうございました</p>
+              )}
+            </div>
+          </div>
+
+          {/* Voting Controls */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button
+              onClick={() => setShowResults(!showResults)}
+              variant="outline"
+              className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black"
+            >
+              <TrendingUp className="mr-2 h-4 w-4" />
+              {showResults ? "通常表示" : "投票結果を見る"}
+            </Button>
+            {totalVotes > 0 && (
+              <p className="text-sm text-gray-300">
+                総投票数: <span className="text-ninja-green font-bold">{totalVotes}</span>票
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {songs.map((song, index) => (
-              <Card
-                key={index}
-                className={`${song.isLatest ? "bg-gradient-to-r from-red-900/50 to-black/50 border-ninja-red" : "bg-ninja-blue-dark border-ninja-green"} transition-all duration-300 hover:scale-105`}
-              >
-                <CardContent className="p-6">
-                  <div className="relative mb-4">
-                    <Image
-                      src={song.thumbnail || "/placeholder.svg"}
-                      alt={song.title}
-                      width={300}
-                      height={200}
-                      className="w-full h-48 object-cover rounded-lg"
-                    />
-                    {song.isLatest && (
-                      <div className="absolute top-2 right-2 bg-ninja-red text-white px-2 py-1 rounded text-xs font-bold">
-                        最新
+            {(showResults ? sortedSongs : songs).map((song, index) => {
+              const voteCount = voteCountMap[song.title] || 0
+              const hasVoted = userVotes.some((vote) => vote.song_title === song.title)
+              const votePercentage = totalVotes > 0 ? (voteCount / totalVotes) * 100 : 0
+              const canVote = !hasVoted && remainingVotes > 0
+              const isVoting = voting === song.title
+
+              return (
+                <Card
+                  key={song.title}
+                  className={`${song.isLatest ? "bg-gradient-to-r from-red-900/50 to-black/50 border-ninja-red" : "bg-ninja-blue-dark border-ninja-green"} transition-all duration-300 hover:scale-105 relative`}
+                >
+                  <CardContent className="p-6">
+                    {/* Ranking Badge */}
+                    {showResults && index < 3 && voteCount > 0 && (
+                      <div
+                        className={`absolute top-2 left-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
+                          index === 0
+                            ? "bg-yellow-500 text-black"
+                            : index === 1
+                              ? "bg-gray-400 text-black"
+                              : "bg-orange-600 text-white"
+                        }`}
+                      >
+                        {index + 1}
                       </div>
                     )}
-                    {song.satireDegree === 5 && (
-                      <div className="absolute top-2 left-2 flex space-x-1">
-                        <span className="text-lg">🔥</span>
-                      </div>
-                    )}
-                  </div>
 
-                  <h3 className="text-xl font-bold mb-2">{song.title}</h3>
-
-                  <div className="text-sm text-gray-300 mb-3">
-                    <p>原曲: {song.originalSong}</p>
-                    <p>歌手: {song.artist}</p>
-                    <p>リリース: {song.releaseDate}</p>
-                  </div>
-
-                  <div className="flex items-center mb-3">
-                    <span className="text-sm font-medium mr-2">風刺度:</span>
-                    <div className="flex space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <span
-                          key={i}
-                          className={`text-lg ${i < song.satireDegree ? "text-ninja-red" : "text-gray-600"}`}
-                        >
-                          🔥
-                        </span>
-                      ))}
+                    <div className="relative mb-4">
+                      <Image
+                        src={song.thumbnail || "/placeholder.svg"}
+                        alt={song.title}
+                        width={300}
+                        height={200}
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                      {song.isLatest && (
+                        <div className="absolute top-2 right-2 bg-ninja-red text-white px-2 py-1 rounded text-xs font-bold">
+                          最新
+                        </div>
+                      )}
+                      {song.satireDegree === 5 && (
+                        <div className="absolute top-2 left-2 flex space-x-1">
+                          <span className="text-lg">🔥</span>
+                        </div>
+                      )}
                     </div>
-                    <span className="ml-2 text-sm font-bold text-ninja-red">
-                      {song.satireDegree === 5
-                        ? "激辛"
-                        : song.satireDegree === 4
-                          ? "大辛"
-                          : song.satireDegree === 3
-                            ? "中辛"
-                            : "甘口"}
-                    </span>
-                  </div>
 
-                  <p className="text-sm text-gray-300 mb-4 line-clamp-3">{song.description}</p>
+                    <h3 className="text-xl font-bold mb-2">{song.title}</h3>
 
-                  <div className="flex space-x-2">
+                    <div className="text-sm text-gray-300 mb-3">
+                      <p>原曲: {song.originalSong}</p>
+                      <p>歌手: {song.artist}</p>
+                      <p>リリース: {song.releaseDate}</p>
+                    </div>
+
+                    <div className="flex items-center mb-3">
+                      <span className="text-sm font-medium mr-2">風刺度:</span>
+                      <div className="flex space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <span
+                            key={i}
+                            className={`text-lg ${i < song.satireDegree ? "text-ninja-red" : "text-gray-600"}`}
+                          >
+                            🔥
+                          </span>
+                        ))}
+                      </div>
+                      <span className="ml-2 text-sm font-bold text-ninja-red">
+                        {song.satireDegree === 5
+                          ? "激辛"
+                          : song.satireDegree === 4
+                            ? "大辛"
+                            : song.satireDegree === 3
+                              ? "中辛"
+                              : "甘口"}
+                      </span>
+                    </div>
+
+                    {/* Vote Information */}
+                    {voteCount > 0 && (
+                      <div className="mb-3">
+                        <div className="flex items-center justify-between text-sm mb-1">
+                          <span className="text-gray-300">投票数: {voteCount}票</span>
+                          <span className="text-ninja-green">{votePercentage.toFixed(1)}%</span>
+                        </div>
+                        <div className="w-full bg-gray-700 rounded-full h-2">
+                          <div
+                            className="bg-ninja-green h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${votePercentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+
+                    <p className="text-sm text-gray-300 mb-4 line-clamp-3">{song.description}</p>
+
+                    <div className="flex space-x-2 mb-3">
+                      <Button
+                        onClick={() => window.open(song.youtubeUrl, "_blank")}
+                        size="sm"
+                        className="bg-ninja-red hover:bg-ninja-red-dark flex-1"
+                      >
+                        <Play className="mr-1 h-4 w-4" />
+                        視聴
+                      </Button>
+                      <Button
+                        onClick={() => handleShare(song.title, song.youtubeUrl)}
+                        variant="outline"
+                        size="sm"
+                        className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black"
+                      >
+                        <Share2 className="mr-1 h-4 w-4" />
+                        シェア
+                      </Button>
+                      <Button
+                        onClick={() => window.open(song.youtubeUrl, "_blank")}
+                        variant="ghost"
+                        size="sm"
+                        className="text-gray-400 hover:text-white"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </Button>
+                    </div>
+
+                    {/* Vote Button */}
                     <Button
-                      onClick={() => window.open(song.youtubeUrl, "_blank")}
+                      onClick={() => handleVote(song.title)}
+                      disabled={!canVote || isVoting}
+                      variant={hasVoted ? "secondary" : canVote ? "default" : "outline"}
                       size="sm"
-                      className="bg-ninja-red hover:bg-ninja-red-dark flex-1"
+                      className={`w-full ${
+                        hasVoted
+                          ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+                          : canVote
+                            ? "bg-ninja-green hover:bg-ninja-green-dark text-black"
+                            : "border-gray-600 text-gray-400 cursor-not-allowed"
+                      }`}
                     >
-                      <Play className="mr-1 h-4 w-4" />
-                      視聴
+                      {isVoting ? (
+                        <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Heart className={`mr-1 h-4 w-4 ${hasVoted ? "fill-current" : ""}`} />
+                      )}
+                      {isVoting
+                        ? "投票中..."
+                        : hasVoted
+                          ? "投票済み"
+                          : remainingVotes > 0
+                            ? "お気に入りに投票"
+                            : "投票上限に達しました"}
                     </Button>
-                    <Button
-                      onClick={() => handleShare(song.title, song.youtubeUrl)}
-                      variant="outline"
-                      size="sm"
-                      className="border-ninja-green text-ninja-green hover:bg-ninja-green hover:text-black"
-                    >
-                      <Share2 className="mr-1 h-4 w-4" />
-                      シェア
-                    </Button>
-                    <Button
-                      onClick={() => window.open(song.youtubeUrl, "_blank")}
-                      variant="ghost"
-                      size="sm"
-                      className="text-gray-400 hover:text-white"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </div>

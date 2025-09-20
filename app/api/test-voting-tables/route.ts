@@ -1,3 +1,5 @@
+// このファイルを app/api/test-voting-tables/route.ts として保存してください
+
 import { NextResponse } from "next/server"
 import { checkVotingTablesExist } from "@/app/actions"
 

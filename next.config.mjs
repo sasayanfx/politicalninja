@@ -23,7 +23,7 @@ const nextConfig = {
         hostname: 'placeholder.svg',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'www.rays-counter.com', // 外部カウンターサービス用
       },
     ],

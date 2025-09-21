@@ -234,6 +234,7 @@ export default function RecruitmentSection() {
                   お問い合わせ
                 </h4>
                 <div className="space-y-3 text-gray-300">
+                  <p><strong>LINE:</strong> @470opewc</p>
                   <p><strong>X（旧Twitter）:</strong> @seijixninja</p>
                   <p><strong>Instagram:</strong> @seijixninja</p>
                 </div>

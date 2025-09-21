@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Netlify用の設定
-  output: 'export',
+  // Vercel用の設定（静的エクスポートを無効化）
+  // output: 'export', // コメントアウト
   trailingSlash: true,
-  distDir: 'out',
   // パス解決の設定
   basePath: '',
   assetPrefix: '',

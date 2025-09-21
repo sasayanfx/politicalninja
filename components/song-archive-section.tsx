@@ -299,66 +299,6 @@ const songs: Song[] = [
     likeCount: 6500,
     shareCount: 1100
   },
-  {
-    title: "夜空ノムコウ（国会ノムコウ）",
-    originalSong: "夜空ノムコウ",
-    artist: "政治忍者",
-    releaseDate: "2024-09-15",
-    satireDegree: 8,
-    description: "SMAPの名曲を政治の世界に。国会の向こうに見える理想の政治を歌った替え歌です。",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "/images/seiji-ninja-card.png",
-    category: "ポップス風刺",
-    tags: ["SMAP", "国会", "理想", "政治"],
-    viewCount: 62000,
-    likeCount: 3900,
-    shareCount: 750
-  },
-  {
-    title: "津軽じょんがら節（政治じょんがら節）",
-    originalSong: "津軽じょんがら節",
-    artist: "政治忍者",
-    releaseDate: "2024-10-20",
-    satireDegree: 9,
-    description: "津軽民謡を政治風刺に。政治家の嘘つきぶりを津軽弁で痛烈に批判した替え歌です。",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "/images/political-ninja-eyes.png",
-    category: "民謡風刺",
-    tags: ["津軽民謡", "嘘つき", "批判", "津軽弁"],
-    viewCount: 34000,
-    likeCount: 2200,
-    shareCount: 420
-  },
-  {
-    title: "長崎の夜はむらさき（国会の夜はまっくら）",
-    originalSong: "長崎の夜はむらさき",
-    artist: "政治忍者",
-    releaseDate: "2024-11-12",
-    satireDegree: 8,
-    description: "フランク永井の名曲を政治風刺に。国会の暗闇で行われる密室政治を歌った替え歌です。",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "/images/political-ninja-mask.png",
-    category: "歌謡風刺",
-    tags: ["フランク永井", "密室", "政治", "暗闇"],
-    viewCount: 48000,
-    likeCount: 3100,
-    shareCount: 580
-  },
-  {
-    title: "異邦人（政治の異邦人）",
-    originalSong: "異邦人",
-    artist: "政治忍者",
-    releaseDate: "2024-12-05",
-    satireDegree: 7,
-    description: "久保田早紀の名曲を政治家に。国民から見た政治家の異邦人ぶりを歌った替え歌です。",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "/images/seiji-ninja-card.png",
-    category: "ポップス風刺",
-    tags: ["久保田早紀", "異邦人", "政治家", "国民"],
-    viewCount: 71000,
-    likeCount: 4600,
-    shareCount: 860
-  }
 ]
 
 export default function SongArchiveSection() {

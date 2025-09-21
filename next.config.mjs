@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Vercelデプロイ時は一時的にエラーチェックを緩和
+  // Netlify用の設定
+  output: 'export',
+  trailingSlash: true,
+  // エラーチェックを緩和
   eslint: {
-    ignoreDuringBuilds: true, // Vercelデプロイ用: ESLintエラーを無視
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true, // Vercelデプロイ用: TypeScriptエラーを無視
+    ignoreBuildErrors: true,
   },
   images: {
     unoptimized: true,

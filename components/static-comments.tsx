@@ -1,7 +1,7 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "components/ui/card"
+import { Badge } from "components/ui/badge"
 import { approvedComments, type Comment } from "@/data/comments"
 import { MessageCircle, Music, Users } from "lucide-react"
 

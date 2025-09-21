@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { ShurikenIcon } from "@/components/icons/shuriken-icon"
+import { Card, CardContent } from "components/ui/card"
+import { ShurikenIcon } from "components/icons/shuriken-icon"
 
 export default function PoliticalIssuesSection() {
   // 問題の大きさでソート（数値が大きいほど重要）

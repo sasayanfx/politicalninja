@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "components/ui/button"
+import { Card, CardContent } from "components/ui/card"
 import { Users, Music, Heart, Video, Mic, CuboidIcon as Cube, Code } from "lucide-react"
 import Link from "next/link"
-import { ShurikenIcon } from "@/components/icons/shuriken-icon"
+import { ShurikenIcon } from "components/icons/shuriken-icon"
 
 export default function RecruitmentSection() {
   const [isVisible, setIsVisible] = useState(false)

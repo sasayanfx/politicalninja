@@ -2,10 +2,10 @@
 
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { Button } from "components/ui/button"
 import { Twitter, Instagram, Music, Calendar, Flame } from "lucide-react"
-import { LineIcon } from "@/components/icons/line-icon"
-import { Badge } from "@/components/ui/badge"
+import { LineIcon } from "components/icons/line-icon"
+import { Badge } from "components/ui/badge"
 
 export default function HeroSection() {
   const [scrollY, setScrollY] = useState(0)

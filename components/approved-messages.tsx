@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "components/ui/card"
 import { Loader2 } from "lucide-react"
-import { getApprovedMessages } from "@/app/actions"
+import { getApprovedMessages } from "app/actions"
 
 type FanMessage = {
   id: number

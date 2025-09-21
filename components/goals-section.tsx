@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "components/ui/card"
 import { Users, TrendingUp } from "lucide-react"
-import { SpinningShurikenIcon } from "@/components/icons/shuriken-icon"
+import { SpinningShurikenIcon } from "components/icons/shuriken-icon"
 
 export default function GoalsSection() {
   const [count1, setCount1] = useState(0)

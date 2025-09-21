@@ -3,6 +3,10 @@ const nextConfig = {
   // Netlify用の設定
   output: 'export',
   trailingSlash: true,
+  distDir: 'out',
+  // パス解決の設定
+  basePath: '',
+  assetPrefix: '',
   // エラーチェックを緩和
   eslint: {
     ignoreDuringBuilds: true,

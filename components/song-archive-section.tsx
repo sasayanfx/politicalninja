@@ -1,13 +1,13 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "./ui/card"
+import { Button } from "./ui/button"
 import { Play, Share2, ExternalLink, Heart, TrendingUp, Vote, Loader2 } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "../hooks/use-toast"
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { submitSongVote, getSongVoteStats, getUserVotes } from "@/app/actions"
-import { getUserId } from "@/lib/user-id"
+import { submitSongVote, getSongVoteStats, getUserVotes } from "../app/actions"
+import { getUserId } from "../lib/user-id"
 
 interface Song {
   title: string

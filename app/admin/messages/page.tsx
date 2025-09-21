@@ -27,21 +27,22 @@ export default function AdminMessagesPage() {
   const { toast } = useToast()
   
   // Supabase接続のエラーハンドリング
-  let supabase
-  try {
-    supabase = createClientComponentClient()
-  } catch (error) {
-    console.error("Supabase connection error:", error)
-    setDbError(true)
-    setLoading(false)
-  }
+  const [supabase] = useState(() => {
+    try {
+      return createClientComponentClient()
+    } catch (error) {
+      console.error("Supabase connection error:", error)
+      return null
+    }
+  })
 
   useEffect(() => {
     fetchMessages()
   }, [])
 
   const fetchMessages = async () => {
-    if (dbError || !supabase) {
+    if (!supabase) {
+      setDbError(true)
       setLoading(false)
       return
     }

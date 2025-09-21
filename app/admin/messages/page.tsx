@@ -23,14 +23,29 @@ export default function AdminMessagesPage() {
   const [messages, setMessages] = useState<FanMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [processingId, setProcessingId] = useState<number | null>(null)
+  const [dbError, setDbError] = useState(false)
   const { toast } = useToast()
-  const supabase = createClientComponentClient()
+  
+  // Supabase接続のエラーハンドリング
+  let supabase
+  try {
+    supabase = createClientComponentClient()
+  } catch (error) {
+    console.error("Supabase connection error:", error)
+    setDbError(true)
+    setLoading(false)
+  }
 
   useEffect(() => {
     fetchMessages()
   }, [])
 
   const fetchMessages = async () => {
+    if (dbError || !supabase) {
+      setLoading(false)
+      return
+    }
+    
     try {
       setLoading(true)
       const { data, error } = await supabase.from("fan_messages").select("*").order("created_at", { ascending: false })
@@ -40,9 +55,10 @@ export default function AdminMessagesPage() {
       setMessages(data || [])
     } catch (error) {
       console.error("Error fetching messages:", error)
+      setDbError(true)
       toast({
-        title: "エラー",
-        description: "メッセージの取得に失敗しました",
+        title: "データベース接続エラー",
+        description: "Supabaseの設定を確認してください",
         variant: "destructive",
       })
     } finally {
@@ -129,6 +145,18 @@ export default function AdminMessagesPage() {
       <div className="flex justify-center items-center min-h-screen">
         <Loader2 className="h-8 w-8 animate-spin text-ninja-red" />
         <span className="ml-2">メッセージを読み込み中...</span>
+      </div>
+    )
+  }
+
+  if (dbError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8">ファンメッセージ管理</h1>
+        <div className="text-center py-12 bg-red-50 rounded-lg">
+          <p className="text-red-600 mb-4">データベース接続エラー</p>
+          <p className="text-gray-600">Supabaseの環境変数が設定されていません</p>
+        </div>
       </div>
     )
   }

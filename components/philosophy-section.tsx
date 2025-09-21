@@ -1,4 +1,4 @@
-import { Card, CardContent } from "components/ui/card"
+import { Card, CardContent } from "./ui/card"
 import { ShurikenIcon } from "components/icons/shuriken-icon"
 
 export default function PhilosophySection() {

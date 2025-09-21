@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Button } from "components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "components/ui/card"
-import { useToast } from "hooks/use-toast"
+import { Button } from "../../../components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
+import { useToast } from "../../../hooks/use-toast"
 import { Loader2 } from "lucide-react"
 
 type FanMessage = {

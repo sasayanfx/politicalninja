@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent } from "components/ui/card"
+import { Card, CardContent } from "./ui/card"
 import { Users, TrendingUp } from "lucide-react"
 import { SpinningShurikenIcon } from "components/icons/shuriken-icon"
 

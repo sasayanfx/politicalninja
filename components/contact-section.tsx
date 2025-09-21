@@ -3,13 +3,13 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Button } from "components/ui/button"
-import { Input } from "components/ui/input"
-import { Textarea } from "components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui/card"
+import { Button } from "./ui/button"
+import { Input } from "./ui/input"
+import { Textarea } from "./ui/textarea"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { MessageSquare, Mail, MapPin, Loader2 } from "lucide-react"
-import { RadioGroup, RadioGroupItem } from "components/ui/radio-group"
-import { Label } from "components/ui/label"
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
+import { Label } from "./ui/label"
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({

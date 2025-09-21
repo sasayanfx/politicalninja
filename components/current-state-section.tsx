@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent } from "components/ui/card"
-import { Progress } from "components/ui/progress"
+import { Card, CardContent } from "./ui/card"
+import { Progress } from "./ui/progress"
 
 export default function CurrentStateSection() {
   const [progress1, setProgress1] = useState(0)

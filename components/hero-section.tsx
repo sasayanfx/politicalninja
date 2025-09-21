@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import { Button } from "./ui/button"
 import { Twitter, Instagram, Music, Calendar, Flame } from "lucide-react"
-import { LineIcon } from "components/icons/line-icon"
+import { LineIcon } from "./icons/line-icon"
 import { Badge } from "./ui/badge"
 
 export default function HeroSection() {

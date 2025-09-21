@@ -1,7 +1,7 @@
 import { Card, CardContent } from "./ui/card"
 import { Button } from "./ui/button"
 import { Calendar } from "lucide-react"
-import { ShurikenIcon } from "components/icons/shuriken-icon"
+import { ShurikenIcon } from "./icons/shuriken-icon"
 
 export default function CalendarSection() {
   return (

@@ -5,7 +5,7 @@ import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import { Users, Music, Heart, Video, Mic, CuboidIcon as Cube, Code } from "lucide-react"
 import Link from "next/link"
-import { ShurikenIcon } from "components/icons/shuriken-icon"
+import { ShurikenIcon } from "./icons/shuriken-icon"
 
 export default function RecruitmentSection() {
   const [isVisible, setIsVisible] = useState(false)
@@ -17,87 +17,87 @@ export default function RecruitmentSection() {
 
   const recruitmentContent = {
     ninja: {
-      title: "政治忍者に参戦",
-      description: "替え歌制作やパフォーマンスに参加したい方、政治を広める活動に興味がある方を募集しています。",
+      title: "政治忍老E��参戦",
+      description: "替え歌制作やパフォーマンスに参加したぁE��、政治を庁E��る活動に興味がある方を募雁E��てぁE��す、E,
       buttonText: "参戦する",
       buttonClass: "bg-ninja-red hover:bg-ninja-red-dark",
       iconClass: "bg-ninja-red",
       icon: <Users className="h-8 w-8 text-white" />,
       details: (
         <div className="mt-4 p-4 bg-black/30 rounded-lg">
-          <h4 className="font-bold text-lg mb-3">政治忍者隊メンバーの活動内容</h4>
+          <h4 className="font-bold text-lg mb-3">政治忍老E��メンバ�Eの活動�E容</h4>
           <ul className="space-y-2">
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>政治替え歌の作詞・作曲・パフォーマンスへの参加</span>
+              <span>政治替え歌�E作詞�E作曲・パフォーマンスへの参加</span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>若者向け政治啓発イベントの企画・運営</span>
+              <span>若老E��け政治啓発イベント�E企画・運営</span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>SNSでの政治情報発信・拡散活動</span>
+              <span>SNSでの政治惁E��発信・拡散活勁E/span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-red mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>政治忍者オリジナルグッズの企画・制作</span>
+              <span>政治忍老E��リジナルグチE��の企画・制佁E/span>
             </li>
           </ul>
-          <p className="mt-3 text-sm">※活動頻度や参加形態は柔軟に対応可能です</p>
+          <p className="mt-3 text-sm">※活動頻度めE��加形態�E柔軟に対応可能でぁE/p>
         </div>
       ),
     },
     collab: {
       title: "コラボレーション",
-      description: "アーティスト、クリエイター、政治団体など、政治忍者とのコラボレーションを希望する方はこちら。",
-      buttonText: "コラボする",
+      description: "アーチE��スト、クリエイター、政治団体など、政治忍老E��のコラボレーションを希望する方はこちら、E,
+      buttonText: "コラボすめE,
       buttonClass: "bg-ninja-green hover:bg-ninja-green-dark",
       iconClass: "bg-ninja-green",
       icon: <Music className="h-8 w-8 text-white" />,
       details: (
         <div className="mt-4 p-4 bg-black/30 rounded-lg">
-          <h4 className="font-bold text-lg mb-3">コラボレーション事例</h4>
+          <h4 className="font-bold text-lg mb-3">コラボレーション事侁E/h4>
           <ul className="space-y-2">
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-green mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>音楽アーティストとの政治替え歌コラボ制作</span>
+              <span>音楽アーチE��ストとの政治替え歌コラボ制佁E/span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-green mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>若者向け政治団体とのイベント共同開催</span>
+              <span>若老E��け政治団体とのイベント�E同開催</span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-green mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>クリエイターとのオリジナルグッズ共同開発</span>
+              <span>クリエイターとのオリジナルグチE��共同開発</span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-green mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>メディアとの政治コンテンツ制作協力</span>
+              <span>メチE��アとの政治コンチE��チE��作協劁E/span>
             </li>
           </ul>
-          <p className="mt-3 text-sm">※新しいアイデアのコラボも歓迎します</p>
+          <p className="mt-3 text-sm">※新しいアイチE��のコラボも歓迎しまぁE/p>
         </div>
       ),
     },
     support: {
-      title: "応援・サポート",
-      description: "政治忍者の活動を応援したい方、資金面や技術面でサポートしたい方はこちらから。",
+      title: "応援・サポ�EチE,
+      description: "政治忍老E�E活動を応援したぁE��、賁E��面めE��術面でサポ�Eトしたい方はこちらから、E,
       buttonText: "応援する",
       buttonClass: "bg-ninja-blue hover:bg-ninja-blue-light",
       iconClass: "bg-ninja-blue",
       icon: <Heart className="h-8 w-8 text-white" />,
       details: (
         <div className="mt-4 p-4 bg-black/30 rounded-lg">
-          <h4 className="font-bold text-lg mb-3">サポート方法</h4>
+          <h4 className="font-bold text-lg mb-3">サポ�Eト方況E/h4>
           <ul className="space-y-2">
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>活動資金の寄付</span>
+              <span>活動賁E��の寁E��E/span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>無償・格安での技術提供</span>
+              <span>無償�E格安での技術提侁E/span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
@@ -105,17 +105,17 @@ export default function RecruitmentSection() {
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>イベント参加や口コミによる応援</span>
+              <span>イベント参加めE��コミによる応援</span>
             </li>
           </ul>
           {/* <ul className="space-y-2">
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>活動資金のクラウドファンディング参加</span>
+              <span>活動賁E��のクラウドファンチE��ング参加</span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>政治忍者グッズの購入による支援</span>
+              <span>政治忍老E��チE��の購入による支援</span>
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
@@ -123,10 +123,10 @@ export default function RecruitmentSection() {
             </li>
             <li className="flex items-start">
               <ShurikenIcon className="text-ninja-blue mr-2 flex-shrink-0 mt-1" size={16} />
-              <span>イベント参加や口コミによる応援</span>
+              <span>イベント参加めE��コミによる応援</span>
             </li>
           </ul> */}
-          <p className="mt-3 text-sm">※あなたのできる形での応援をお待ちしています</p>
+          <p className="mt-3 text-sm">※あなた�Eできる形での応援をお征E��してぁE��ぁE/p>
         </div>
       ),
     },
@@ -144,8 +144,7 @@ export default function RecruitmentSection() {
         >
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              共に<span className="text-ninja-red">闇を斬る</span>仲間を募集！
-            </h2>
+              共に<span className="text-ninja-red">闁E��斬めE/span>仲間を募集�E�E            </h2>
             <div className="w-24 h-1 bg-ninja-green mx-auto"></div>
           </div>
 
@@ -175,7 +174,7 @@ export default function RecruitmentSection() {
           </div>
 
           <div className="mt-12 bg-black/50 p-8 rounded-lg">
-            <h3 className="text-2xl font-bold mb-4 text-center">現在募集中の技術サポート人材</h3>
+            <h3 className="text-2xl font-bold mb-4 text-center">現在募集中の技術サポ�Eト人杁E/h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
               <div className="flex flex-col items-center">
                 <div className="bg-ninja-red rounded-full p-3 mb-4">
@@ -183,17 +182,15 @@ export default function RecruitmentSection() {
                 </div>
                 <h4 className="font-bold mb-2">動画クリエーター</h4>
                 <p className="text-center text-sm">
-                  政治替え歌のMV制作や、SNS用の短尺動画制作ができる方を募集しています。
-                </p>
+                  政治替え歌�EMV制作や、SNS用の短尺動画制作ができる方を募雁E��てぁE��す、E                </p>
               </div>
               <div className="flex flex-col items-center">
                 <div className="bg-ninja-green rounded-full p-3 mb-4">
                   <Mic className="h-6 w-6 text-white" />
                 </div>
-                <h4 className="font-bold mb-2">ボーカロイド制作者</h4>
+                <h4 className="font-bold mb-2">ボ�Eカロイド制作老E/h4>
                 <p className="text-center text-sm">
-                  ボーカロイドを自在に扱い、政治替え歌の制作に協力いただける方を募集しています。
-                </p>
+                  ボ�Eカロイドを自在に扱ぁE��政治替え歌�E制作に協力ぁE��だける方を募雁E��てぁE��す、E                </p>
               </div>
               <div className="flex flex-col items-center">
                 <div className="bg-ninja-blue rounded-full p-3 mb-4">
@@ -201,8 +198,7 @@ export default function RecruitmentSection() {
                 </div>
                 <h4 className="font-bold mb-2">3Dアニメーター</h4>
                 <p className="text-center text-sm">
-                  3Dアニメーション作成が得意で、政治忍者のキャラクター制作やMV制作に協力いただける方を募集しています。
-                </p>
+                  3Dアニメーション作�Eが得意で、政治忍老E�Eキャラクター制作やMV制作に協力ぁE��だける方を募雁E��てぁE��す、E                </p>
               </div>
               <div className="flex flex-col items-center">
                 <div className="bg-ninja-red rounded-full p-3 mb-4">
@@ -210,14 +206,13 @@ export default function RecruitmentSection() {
                 </div>
                 <h4 className="font-bold mb-2">WEBクリエーター</h4>
                 <p className="text-center text-sm">
-                  特にサーバーサイド技術にお詳しい方、フォームの実装、ショップカートの実装などができる方を募集しています。
-                </p>
+                  特にサーバ�Eサイド技術にお詳しい方、フォームの実裁E��ショチE�Eカート�E実裁E��どができる方を募雁E��てぁE��す、E                </p>
               </div>
             </div>
             <div className="text-center mt-8">
               <Link href="#contact">
                 <Button size="lg" className="bg-ninja-red hover:bg-ninja-red-dark">
-                  技術サポートに応募する
+                  技術サポ�Eトに応募する
                 </Button>
               </Link>
             </div>

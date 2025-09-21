@@ -26,125 +26,338 @@ interface Song {
 }
 
 const songs: Song[] = [
+  // 無題１（1枚目）
   {
-    title: "政治忍者参上！",
-    originalSong: "忍者参上",
+    title: "税のブルース",
+    originalSong: "真のブルース",
     artist: "政治忍者",
-    releaseDate: "2024-01-15",
-    satireDegree: 9,
-    description: "政治忍者としての決意を込めたデビュー曲。日本の政治を変えるという強い意志を込めた替え歌です。",
-    youtubeUrl: "https://youtube.com/watch?v=example1",
-    thumbnail: "/images/political-ninja-eyes.png",
-    category: "デビュー",
-    tags: ["政治", "忍者", "デビュー", "決意"],
-    viewCount: 150000,
-    likeCount: 8500,
-    shareCount: 1200
-  },
-  {
-    title: "国会で踊る",
-    originalSong: "ダンシング・ヒーロー",
-    artist: "政治忍者",
-    releaseDate: "2024-02-20",
-    satireDegree: 8,
-    description: "国会の混乱ぶりを風刺したダンスナンバー。議事堂で踊る政治家たちを皮肉った替え歌です。",
-    youtubeUrl: "https://youtube.com/watch?v=example2",
-    thumbnail: "/images/political-ninja-mask.png",
-    category: "風刺",
-    tags: ["国会", "ダンス", "風刺", "混乱"],
-    viewCount: 98000,
-    likeCount: 6200,
-    shareCount: 890
-  },
-  {
-    title: "選挙の夜に",
-    originalSong: "愛の夜",
-    artist: "政治忍者",
-    releaseDate: "2024-03-10",
-    satireDegree: 7,
-    description: "選挙結果への想いを込めたバラード。有権者の声が届かない政治への嘆きを歌っています。",
-    youtubeUrl: "https://youtube.com/watch?v=example3",
-    thumbnail: "/images/seiji-ninja-card.png",
-    category: "バラード",
-    tags: ["選挙", "バラード", "政治", "有権者"],
-    viewCount: 75000,
-    likeCount: 4800,
-    shareCount: 650
-  },
-  {
-    title: "政治改革ラップ",
-    originalSong: "改革ラップ",
-    artist: "政治忍者",
-    releaseDate: "2024-04-05",
-    satireDegree: 8,
-    description: "政治改革の必要性をラップで表現。若者の政治参加を促すエネルギッシュな楽曲です。",
-    youtubeUrl: "https://youtube.com/watch?v=example4",
-    thumbnail: "/images/political-ninja-eyes.png",
-    category: "ラップ",
-    tags: ["改革", "ラップ", "若者", "政治参加"],
-    viewCount: 120000,
-    likeCount: 7200,
-    shareCount: 1100
-  },
-  {
-    title: "政治家の本音",
-    originalSong: "心の声",
-    artist: "政治忍者",
-    releaseDate: "2024-05-12",
-    satireDegree: 9,
-    description: "政治家の本音を代弁した風刺歌。表向きの言葉と本音のギャップを歌っています。",
-    youtubeUrl: "https://youtube.com/watch?v=example5",
-    thumbnail: "/images/political-ninja-mask.png",
-    category: "風刺",
-    tags: ["政治家", "本音", "風刺", "ギャップ"],
-    viewCount: 89000,
-    likeCount: 5600,
-    shareCount: 780
-  },
-  {
-    title: "税金の行方",
-    originalSong: "旅立ちの歌",
-    artist: "政治忍者",
-    releaseDate: "2024-06-18",
-    satireDegree: 7,
-    description: "税金の無駄遣いを風刺した楽曲。国民の血税がどこに行くのかを問いかけています。",
-    youtubeUrl: "https://youtube.com/watch?v=example6",
-    thumbnail: "/images/seiji-ninja-card.png",
-    category: "風刺",
-    tags: ["税金", "無駄遣い", "風刺", "血税"],
-    viewCount: 95000,
-    likeCount: 6100,
-    shareCount: 920
-  },
-  {
-    title: "民主主義の歌",
-    originalSong: "自由の歌",
-    artist: "政治忍者",
-    releaseDate: "2024-07-25",
+    releaseDate: "2025-06-01",
     satireDegree: 6,
-    description: "民主主義の大切さを歌った楽曲。市民一人ひとりの声が政治を動かす力を表現しています。",
-    youtubeUrl: "https://youtube.com/watch?v=example7",
-    thumbnail: "/images/political-ninja-eyes.png",
-    category: "ポップス",
-    tags: ["民主主義", "市民", "政治参加", "希望"],
+    description: "増税への不満を歌ったブルース調の楽曲。税制の矛盾を嘆く庶民の声。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-mask.png",
+    category: "中辛",
+    tags: ["税金", "ブルース", "増税", "庶民"],
     viewCount: 78000,
-    likeCount: 4900,
+    likeCount: 4200,
     shareCount: 680
   },
   {
-    title: "政治とメディア",
-    originalSong: "情報戦争",
+    title: "増税信者",
+    originalSong: "お祭り忍者",
+    artist: "政治忍者",
+    releaseDate: "2025-06-01",
+    satireDegree: 10,
+    description: "とにかく税金を多く取り、高すぎる問題を訴える激辛楽曲。政府の税制政策への激辛な批判。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "激辛",
+    tags: ["増税", "税制", "政府批判", "激辛"],
+    viewCount: 95000,
+    likeCount: 6800,
+    shareCount: 1200
+  },
+  // 無題２（2枚目）
+  {
+    title: "国売られて",
+    originalSong: "魅せられて",
+    artist: "政治忍者",
+    releaseDate: "2025-09-01",
+    satireDegree: 10,
+    description: "海外バラマキ・移民断固反対！日本の国益を売り渡す政治への怒りを込めた激辛レベルの楽曲。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-eyes.png",
+    category: "激辛",
+    tags: ["海外バラマキ", "移民", "国益", "激辛"],
+    viewCount: 125000,
+    likeCount: 8900,
+    shareCount: 1500
+  },
+  {
+    title: "おどるキングボンビー",
+    originalSong: "おどるポンポコリン",
+    artist: "政治忍者",
+    releaseDate: "2025-09-01",
+    satireDegree: 8,
+    description: "海外には湯水のように税金をバラまくのに、国内の深刻は絶対に拒否する日本政府への激辛な批判！",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-eyes.png",
+    category: "大辛",
+    tags: ["海外バラマキ", "税金", "政府批判", "大辛"],
+    viewCount: 87000,
+    likeCount: 5900,
+    shareCount: 980
+  },
+  {
+    title: "日本人",
+    originalSong: "異邦人",
+    artist: "政治忍者",
+    releaseDate: "2025-08-01",
+    satireDegree: 8,
+    description: "日本の美しい自然を破壊するメガソーラー建設に断固反対！真の日本人として立ち上がる時が来た。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-mask.png",
+    category: "大辛",
+    tags: ["メガソーラー", "環境破壊", "日本人", "大辛"],
+    viewCount: 102000,
+    likeCount: 7300,
+    shareCount: 1400
+  },
+  {
+    title: "You Are！ZAIMU=SHOW",
+    originalSong: "ウィーアー！",
+    artist: "政治忍者",
+    releaseDate: "2025-08-01",
+    satireDegree: 8,
+    description: "海外には大金をバラまくのに財政が厳しいと嘘ついて増税しまくる無能財務省への怒りをパンチ！",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "大辛",
+    tags: ["財務省", "海外バラマキ", "増税", "大辛"],
+    viewCount: 93000,
+    likeCount: 6500,
+    shareCount: 1150
+  },
+  {
+    title: "あー開票中",
+    originalSong: "あー夏休み",
+    artist: "政治忍者",
+    releaseDate: "2025-08-01",
+    satireDegree: 8,
+    description: "参院選の深夜の不正な集計を不正義と警告に痛烈に批判した大辛レベルの楽曲。選挙管理委員会への怒りを込めた一作。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-mask.png",
+    category: "大辛",
+    tags: ["選挙", "不正", "開票", "大辛"],
+    viewCount: 84000,
+    likeCount: 5700,
+    shareCount: 920
+  },
+  {
+    title: "世界中の議員よりきっと",
+    originalSong: "世界中の誰よりきっと",
+    artist: "政治忍者",
+    releaseDate: "2025-08-01",
+    satireDegree: 8,
+    description: "高すぎる議員報酬を買いながら議会で居眠りする議員を痛烈に批判した大辛レベルの楽曲。国会議員への怒りをぶつけた一作。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "大辛",
+    tags: ["議員報酬", "居眠り", "国会", "大辛"],
+    viewCount: 91000,
+    likeCount: 6200,
+    shareCount: 1100
+  },
+  // 無題３（3枚目）
+  {
+    title: "石破よGoodbye！",
+    originalSong: "キン肉マンGoFight！",
+    artist: "政治忍者",
+    releaseDate: "2025-07-01",
+    satireDegree: 8,
+    description: "3選攻めでも許されている石破茂首相へのレクイエムを痛烈に風刺した大辛レベルの楽曲。政府の政治政策への怒りを込めた一作。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-eyes.png",
+    category: "大辛",
+    tags: ["石破茂", "政権批判", "レクイエム", "大辛"],
+    viewCount: 76000,
+    likeCount: 4900,
+    shareCount: 850
+  },
+  {
+    title: "自民と財務省のマネーゲーム",
+    originalSong: "男と女のラブゲーム",
+    artist: "政治忍者",
+    releaseDate: "2025-07-01",
+    satireDegree: 10,
+    description: "増税一辺倒の財務省とそのイベント自民党の現状を痛烈に風刺した激辛レベルの楽曲。政府の政治政策への怒りを込めた一作。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "激辛",
+    tags: ["自民党", "財務省", "マネーゲーム", "激辛"],
+    viewCount: 108000,
+    likeCount: 7800,
+    shareCount: 1350
+  },
+  {
+    title: "増税ループ",
+    originalSong: "オトループ",
+    artist: "政治忍者",
+    releaseDate: "2025-07-01",
+    satireDegree: 6,
+    description: "増税の無限ループに陥った日本の現状を痛烈に風刺した中辛レベルの楽曲。政府の政治政策への怒りを込めた一作。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-mask.png",
+    category: "中辛",
+    tags: ["増税", "無限ループ", "政府批判", "中辛"],
+    viewCount: 69000,
+    likeCount: 4100,
+    shareCount: 720
+  },
+  {
+    title: "無能総理誕生！",
+    originalSong: "勇者王誕生！",
+    artist: "政治忍者",
+    releaseDate: "2025-06-01",
+    satireDegree: 10,
+    description: "経理の無能さを痛烈に風刺した激辛レベルの楽曲。政府への怒りを込めた一作品。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "激辛",
+    tags: ["無能", "総理", "政府批判", "激辛"],
+    viewCount: 112000,
+    likeCount: 8200,
+    shareCount: 1480
+  },
+  {
+    title: "米食う日まで",
+    originalSong: "また君に恋してる",
+    artist: "政治忍者",
+    releaseDate: "2025-06-01",
+    satireDegree: 8,
+    description: "今和の米価格問題と政治の関係を歌った社会派楽曲。庶民の生活を代弁する。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-eyes.png",
+    category: "大辛",
+    tags: ["米価格", "生活", "庶民", "大辛"],
+    viewCount: 73000,
+    likeCount: 4600,
+    shareCount: 810
+  },
+  {
+    title: "俺ら国会さ行くだ",
+    originalSong: "俺ら東京さ行くだ",
+    artist: "政治忍者",
+    releaseDate: "2025-06-01",
+    satireDegree: 10,
+    description: "現在の政治問題を痛烈に、政治参加の重要性を訴える楽曲。若者の政治離れに石を投じる。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "激辛",
+    tags: ["政治参加", "若者", "国会", "激辛"],
+    viewCount: 89000,
+    likeCount: 5800,
+    shareCount: 1050
+  },
+  {
+    title: "乾杯（増税に）",
+    originalSong: "乾杯",
+    artist: "政治忍者",
+    releaseDate: "2024-05-12",
+    satireDegree: 9,
+    description: "長渕剛の名曲を増税問題に。「増税に乾杯」として国民の怒りを代弁した風刺歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-mask.png",
+    category: "ロック風刺",
+    tags: ["長渕剛", "増税", "国民", "怒り"],
+    viewCount: 89000,
+    likeCount: 6200,
+    shareCount: 1200
+  },
+  {
+    title: "心の旅（政治の旅）",
+    originalSong: "心の旅",
+    artist: "政治忍者",
+    releaseDate: "2024-06-18",
+    satireDegree: 7,
+    description: "チューリップの名曲を政治の世界に。政治家の心の変遷を旅に例えて歌った替え歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "フォーク風刺",
+    tags: ["チューリップ", "政治家", "心境", "変化"],
+    viewCount: 41000,
+    likeCount: 2600,
+    shareCount: 380
+  },
+  {
+    title: "青春（政治家の青春）",
+    originalSong: "青春",
+    artist: "政治忍者",
+    releaseDate: "2024-07-25",
+    satireDegree: 8,
+    description: "毛皮のマリーズの名曲を政治家の過去に。若き日の理想と現在のギャップを歌った風刺歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-eyes.png",
+    category: "ロック風刺",
+    tags: ["毛皮のマリーズ", "理想", "現実", "ギャップ"],
+    viewCount: 73000,
+    likeCount: 4800,
+    shareCount: 920
+  },
+  {
+    title: "川の流れのように（政治の流れのように）",
+    originalSong: "川の流れのように",
     artist: "政治忍者",
     releaseDate: "2024-08-30",
-    satireDegree: 8,
-    description: "政治とメディアの関係を風刺した楽曲。情報操作の現実を鋭く指摘しています。",
-    youtubeUrl: "https://youtube.com/watch?v=example8",
+    satireDegree: 6,
+    description: "美空ひばりの名曲を政治の世界に。時代と共に変わる政治の流れを川に例えて歌った替え歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     thumbnail: "/images/political-ninja-mask.png",
-    category: "風刺",
-    tags: ["メディア", "情報操作", "風刺", "現実"],
-    viewCount: 110000,
-    likeCount: 6800,
-    shareCount: 1050
+    category: "演歌風刺",
+    tags: ["美空ひばり", "時代", "政治", "変化"],
+    viewCount: 95000,
+    likeCount: 6500,
+    shareCount: 1100
+  },
+  {
+    title: "夜空ノムコウ（国会ノムコウ）",
+    originalSong: "夜空ノムコウ",
+    artist: "政治忍者",
+    releaseDate: "2024-09-15",
+    satireDegree: 8,
+    description: "SMAPの名曲を政治の世界に。国会の向こうに見える理想の政治を歌った替え歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "ポップス風刺",
+    tags: ["SMAP", "国会", "理想", "政治"],
+    viewCount: 62000,
+    likeCount: 3900,
+    shareCount: 750
+  },
+  {
+    title: "津軽じょんがら節（政治じょんがら節）",
+    originalSong: "津軽じょんがら節",
+    artist: "政治忍者",
+    releaseDate: "2024-10-20",
+    satireDegree: 9,
+    description: "津軽民謡を政治風刺に。政治家の嘘つきぶりを津軽弁で痛烈に批判した替え歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-eyes.png",
+    category: "民謡風刺",
+    tags: ["津軽民謡", "嘘つき", "批判", "津軽弁"],
+    viewCount: 34000,
+    likeCount: 2200,
+    shareCount: 420
+  },
+  {
+    title: "長崎の夜はむらさき（国会の夜はまっくら）",
+    originalSong: "長崎の夜はむらさき",
+    artist: "政治忍者",
+    releaseDate: "2024-11-12",
+    satireDegree: 8,
+    description: "フランク永井の名曲を政治風刺に。国会の暗闇で行われる密室政治を歌った替え歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/political-ninja-mask.png",
+    category: "歌謡風刺",
+    tags: ["フランク永井", "密室", "政治", "暗闇"],
+    viewCount: 48000,
+    likeCount: 3100,
+    shareCount: 580
+  },
+  {
+    title: "異邦人（政治の異邦人）",
+    originalSong: "異邦人",
+    artist: "政治忍者",
+    releaseDate: "2024-12-05",
+    satireDegree: 7,
+    description: "久保田早紀の名曲を政治家に。国民から見た政治家の異邦人ぶりを歌った替え歌です。",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    thumbnail: "/images/seiji-ninja-card.png",
+    category: "ポップス風刺",
+    tags: ["久保田早紀", "異邦人", "政治家", "国民"],
+    viewCount: 71000,
+    likeCount: 4600,
+    shareCount: 860
   }
 ]
 
@@ -282,7 +495,7 @@ export default function SongArchiveSection() {
             <br />
             お気に入りの3曲に投票してください！
           </p>
-        </div>
+              </div>
 
         {/* 投票状況表示 */}
         {voteMessage && (
@@ -298,8 +511,8 @@ export default function SongArchiveSection() {
           {userVotes.length > 0 && (
             <p className="text-gray-300 text-sm mt-2">
               投票済み: {userVotes.join(', ')}
-            </p>
-          )}
+              </p>
+            )}
         </div>
 
         {/* 楽曲グリッド */}
@@ -308,12 +521,12 @@ export default function SongArchiveSection() {
             const hasVoted = userVotes.includes(song.title)
             const voteCount = voteStats[song.title] || 0
 
-            return (
-              <Card
+              return (
+                <Card
                 key={index}
                 className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-700 backdrop-blur-sm hover:from-gray-700/60 hover:to-gray-800/60 transition-all duration-300 group"
-              >
-                <CardContent className="p-6">
+                >
+                  <CardContent className="p-6">
                   {/* サムネイル */}
                   <div className="relative mb-4 rounded-lg overflow-hidden">
                     <Image
@@ -331,7 +544,7 @@ export default function SongArchiveSection() {
                         <Play className="h-6 w-6" />
                       </Button>
                     </div>
-                  </div>
+                    </div>
 
                   {/* 楽曲情報 */}
                   <div className="space-y-3">
@@ -347,7 +560,7 @@ export default function SongArchiveSection() {
                     <div className="flex items-center gap-2 mb-3">
                       <span className="px-2 py-1 bg-ninja-red/20 text-ninja-red text-xs rounded-full">
                         {song.category}
-                      </span>
+                          </span>
                       <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">
                         風刺度: {song.satireDegree}/10
                       </span>
@@ -367,7 +580,7 @@ export default function SongArchiveSection() {
                       <div className="flex items-center gap-1">
                         <TrendingUp className="h-4 w-4" />
                         <span>{song.viewCount.toLocaleString()}回再生</span>
-                      </div>
+                        </div>
                       <div className="flex items-center gap-1">
                         <Heart className="h-4 w-4" />
                         <span>{song.likeCount.toLocaleString()}</span>
@@ -430,11 +643,11 @@ export default function SongArchiveSection() {
                       </Button>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
 
         {/* 投票結果表示 */}
         {userVotes.length > 0 && (

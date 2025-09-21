@@ -234,10 +234,8 @@ export default function RecruitmentSection() {
                   お問い合わせ
                 </h4>
                 <div className="space-y-3 text-gray-300">
-                  <p><strong>LINE:</strong> @politicalninja</p>
-                  <p><strong>Twitter:</strong> @political_ninja</p>
-                  <p><strong>Email:</strong> info@politicalninja.jp</p>
-                  <p><strong>電話:</strong> 03-XXXX-XXXX</p>
+                  <p><strong>X（旧Twitter）:</strong> @seijixninja</p>
+                  <p><strong>Instagram:</strong> @seijixninja</p>
                 </div>
               </CardContent>
             </Card>

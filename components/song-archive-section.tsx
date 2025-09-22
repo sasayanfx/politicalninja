@@ -465,10 +465,10 @@ export default function SongArchiveSection() {
                     <div className="flex items-center mb-3">
                       <span className="text-sm font-medium mr-2">風刺度:</span>
                       <div className="flex space-x-1">
-                        {[...Array(5)].map((_, i) => (
+                        {[...Array(song.satireDegree)].map((_, i) => (
                           <span
                             key={i}
-                            className={`text-lg ${i < song.satireDegree ? "text-ninja-red" : "text-gray-600"}`}
+                            className="text-lg text-ninja-red"
                           >
                             🔥
                           </span>

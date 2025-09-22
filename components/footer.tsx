@@ -60,7 +60,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#parody-songs" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="#archive" className="text-gray-300 hover:text-white transition-colors">
                   政治忍者の楽曲
                 </Link>
               </li>
@@ -70,8 +70,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="#calendar" className="text-gray-300 hover:text-white transition-colors">
+                  カレンダー
+                </Link>
+              </li>
+              <li>
                 <Link href="#fans" className="text-gray-300 hover:text-white transition-colors">
                   ファンの広場
+                </Link>
+              </li>
+              <li>
+                <Link href="#goods" className="text-gray-300 hover:text-white transition-colors">
+                  グッズ
                 </Link>
               </li>
             </ul>

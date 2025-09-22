@@ -9,7 +9,7 @@ import { SpinningShurikenIcon } from "./icons/shuriken-icon"
 const navItems = [
   { name: "理念", href: "#philosophy" },
   { name: "現状", href: "#current-state" },
-  { name: "楽曲", href: "#parody-songs" },
+  { name: "楽曲", href: "#archive" },
   { name: "今期の目標", href: "#goals" },
   { name: "カレンダー", href: "#calendar" },
   { name: "ファン", href: "#fans" },
